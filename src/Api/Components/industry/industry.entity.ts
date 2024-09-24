@@ -9,12 +9,12 @@ export const INDUSTRY_COLLECTION_NAME = 'industry';
 
 export default class Industry extends SuperAdminEntityDTO implements IIndustry {
   name: string = ""; // Only the "name" field is included
-  businessId: Schema.Types.ObjectId | null = new ObjectId(" ")
+  userId: Schema.Types.ObjectId | null = new ObjectId(" ")
 }
 
 export interface IIndustry extends SuperAdminEntityDTO {
   name: string;
-  businessId: Schema.Types.ObjectId | null
+  userId: Schema.Types.ObjectId | null
 }
 
 const schema = new Schema<IIndustry>(
@@ -23,7 +23,7 @@ const schema = new Schema<IIndustry>(
       type: String,
       required: true
     },
-    businessId: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: USER_COLLECTION_NAME
     }

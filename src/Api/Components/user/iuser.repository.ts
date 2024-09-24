@@ -15,7 +15,6 @@ export default interface IUserRepository extends IRepository<User> {
   deletManyUsers(userIds: string[]): Promise<any>
   deleteManyWithBusinessId(businessId: string): Promise<any>
   findById(id: string): Promise<any>
-  getUsersRecommendations(userData: User): Promise<any>
   backupMany(userIds: string[]): Promise<any>
   findAllUserAggregate(query: any, pagination: any, userId:DatabaseId): any
   findAllUserUsingRoleAggregate(query: any, pagination: any): any

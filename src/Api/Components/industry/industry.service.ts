@@ -30,9 +30,17 @@ export class IndustryService implements IIndustryService {
     }
   }
 
-  async getAll(businessId: DatabaseId, paginationData: PaginationDataDTO): Promise<any> {
+  async getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any> {
     try {
-      return this.industryRepository.findAllWithPagination({ $or: [{ businessId: businessId }, { businessId: null }] }, paginationData.page, paginationData.limit)
+      return this.industryRepository.findAllWithPagination({ $or: [{ userId: userId }, { userId: null }] }, paginationData.page, paginationData.limit)
+    } catch (error) {
+      throw new BadRequestError('No industry found')
+    }
+  }
+
+  async getAllforAdmin( paginationData: PaginationDataDTO): Promise<any> {
+    try {
+      return this.industryRepository.findAllWithPagination({}, paginationData.page, paginationData.limit)
     } catch (error) {
       throw new BadRequestError('No industry found')
     }

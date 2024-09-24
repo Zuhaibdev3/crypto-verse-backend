@@ -20,30 +20,28 @@ export class IndustryController {
 
   industryService = this.getIndustryService();
 
-  addByAdmin =
-    asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
-      let bodyData: IndustryPayloadDTO = req.body
-      const adminMetaData: AdminMetaDataDTO = tokenDataParser.getAdminTokenMetaData(req.user)
-      let result = await this.industryService.add(bodyData, adminMetaData)
-      new SuccessResponse('Industry added successfully', result).send(res);
-    })
-
   add =
     asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       let bodyData: IndustryPayloadDTO = req.body
-      const superAdminMetaData: SuperAdminMetaDataDTO = tokenDataParser.getSuperAdminTokenMetaData(req.user)
-      let result = await this.industryService.add(bodyData, superAdminMetaData)
+      const adminMetaData: AdminMetaDataDTO = tokenDataParser.getUserTokenMetaData(req.user)
+      let result = await this.industryService.add(bodyData, adminMetaData)
       new SuccessResponse('Industry added successfully', result).send(res);
     })
 
   getAll =
     asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       const paginationData: PaginationDataDTO = paginationParser.getpaginationData(req.query)
-      let { businessId } = req.user
-      let result = await this.industryService.getAll(businessId, paginationData)
+      let { _id: userId } = req.user
+      let result = await this.industryService.getAll(userId, paginationData)
       new SuccessResponse('found industry successfully', result).send(res);
     })
-
+    getAllforAdmin =
+    asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+      const paginationData: PaginationDataDTO = paginationParser.getpaginationData(req.query)
+      let { _id: userId } = req.user
+      let result = await this.industryService.getAllforAdmin(paginationData)
+      new SuccessResponse('All found industry successfully', result).send(res);
+    })
   get =
     asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       const paramsData: IndustryIdParamDTO = req.params

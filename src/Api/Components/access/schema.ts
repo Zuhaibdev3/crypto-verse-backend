@@ -23,7 +23,7 @@ export default {
     date_of_birth: Joi.string().optional(),
     phone: Joi.string().optional(),
     password: Joi.string().required().min(6),
-    role: Joi.string().optional().allow(RoleCode.USER, RoleCode.ADMIN, RoleCode.SUPER_ADMIN, RoleCode.INSTRUCTOR ),
+    role: Joi.string().optional().allow(RoleCode.USER, RoleCode.SUPER_ADMIN, ),
     location: Joi.string().optional(),
     permissions: Joi.array().optional(),
     createdBy: Joi.string().optional(),

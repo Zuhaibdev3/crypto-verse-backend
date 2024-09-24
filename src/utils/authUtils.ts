@@ -40,7 +40,6 @@ export const createTokens = async (
       device,
       accessTokenKey,
       tokenInfo.accessTokenValidityDays,
-      user.businessId
     ),
   );
 
@@ -54,7 +53,6 @@ export const createTokens = async (
       device,
       refreshTokenKey,
       tokenInfo.refreshTokenValidityDays,
-      user.businessId
     ),
   );
 

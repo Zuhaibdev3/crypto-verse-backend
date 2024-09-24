@@ -8,26 +8,15 @@ import { injectable } from 'inversify';
 import IUserRepository from './iuser.repository';
 import Repository from '../../repository/repository';
 import { DatabaseId } from '../../../types';
-import { User, INSTRUCTOR_PERMISSION, UserModel, USER_TYPE } from '../../Api/Components/user/user.entity';
+import { User, UserModel, USER_TYPE } from '../../Api/Components/user/user.entity';
 // import Role, { RoleModel } from '../../database/model/Role';
 
-export const selectString = "+email +password +role +telegram_id +date_of_birth +bio +phone +website +facebook_link +twitter_link +instagram_link +linkedin_link";
+export const selectString = "+email +password +role ";
 export const selectArray = [
   '_id',
   'name',
   'role',
   'email',
-  'telegram_id',
-  'date_of_birth',
-  'bio',
-  "businessQuestionsAnswered",
-  'phone',
-  'website',
-  'facebook_link',
-  'twitter_link',
-  'instagram_link',
-  'businessQuestionsAnswered',
-  'linkedin_link'
 ];
 @injectable()
 // export default class UserRepo extends Omit<Repository<User>, 'create' | 'delete' | 'findById' | 'update' > implements IUserRepository {
@@ -66,170 +55,30 @@ export default class UserRepo
 
   async findById(id: Types.ObjectId): Promise<User | null> {
     // try {
-    let a: any = await UserModel.findOne({ _id: id, status: true })
+    let a: any = await UserModel.findOne({ _id: id, })
       .select(selectString)
       .populate({
-        path: 'role roleId business businessId businessId.features business.features skills lifeExperience cultureGroup',
+        path: 'role roleId',
         // select: "-status"
       })
       .lean<User>()
       .exec();
-    let rolesData;
-
-    if (!('business' in a)) {
-      a.business = a?.businessId
-      a.businessId = a?.businessId?._id
-    } else {
-      a.businessId = a?.business?._id
-    }
-
-    // } catch (error) {
-    //   console.log("error...", error)
-    // }
-
-    // .populate({
-    //   path: 'features', // Field name from your schema
-    //   model: FEATURES_COLLECTION_NAME, // The model to use for populating
-    //   select: '-_id' // Specify the fields you want to select from the features collection
-    // })
-
+    if (!a) return null;
     return a
-  }
-
-  findByBusiness(id: Types.ObjectId): Promise<User[] | null> {
-    return UserModel.find({ status: true, business: id, permissions: INSTRUCTOR_PERMISSION })
-      .lean<User[]>()
-      .exec();
-  }
-
-
-  async getUserWithCoursesByBusiness(id: Types.ObjectId): Promise<any> {
-    const data = await UserModel.aggregate([
-      {
-        $match: {
-          status: true,
-          business: id,
-          permissions: INSTRUCTOR_PERMISSION
-        }
-      },
-      {
-        $lookup: {
-          from: "courses",
-          let: { instructorId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$instructor", "$$instructorId"] }
-              }
-            }
-          ],
-          as: "courses"
-        }
-      },
-      {
-        $project: {
-          _id: 1,
-          first_name: 1,
-          last_name: 1,
-          profilePicUrl: 1,
-          email: 1,
-          courseCount: { $size: "$courses" }
-        }
-      }
-    ])
-    return data
-  }
-  async getUserWithCoursesByUserId(id: Types.ObjectId): Promise<any> {
-    const data = await UserModel.aggregate([
-      {
-        $match: {
-          status: true,
-          _id: id,
-          permissions: INSTRUCTOR_PERMISSION
-        }
-      },
-      {
-        $lookup: {
-          from: "courses",
-          let: { instructorId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$instructor", "$$instructorId"] }
-              }
-            }
-          ],
-          as: "courses"
-        }
-      },
-      {
-        $project: {
-          _id: 1,
-          first_name: 1,
-          last_name: 1,
-          profilePicUrl: 1,
-          email: 1,
-          courseCount: { $size: "$courses" }
-        }
-      }
-    ])
-    return data
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    let a: any = await UserModel.findOne({ email: email, status: true })
-      .select('+email +password +role +telegram_id')
+    let a: any = await UserModel.findOne({ email: email, })
+      .select('+email +password +role')
       .populate({
-        path: 'role roleId business businessId businessId.features business.features skills lifeExperience cultureGroup',
-        // select: "-status"
+        path: 'role roleId',
       })
       .lean<User>()
       .exec();
-    let rolesData;
-    // if (!a) throw new BadRequestError('Invalid credentials');
     if (!a) return null;
-    if (!('business' in a)) {
-      a.business = a?.businessId
-      a.businessId = a?.businessId?._id
-    } else {
-      a.businessId = a?.business?._id
-    }
-
     return a
   }
 
-  findByTelegram(telegram_id: string): Promise<User | null> {
-    return UserModel.findOne({
-      // $or: [
-      //   { email },
-      //   { google_id }
-      // ]
-      telegram_id, status: true
-    })
-      .select('+email +password +role +telegram_id')
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean<User>()
-      .exec();
-  }
-
-  findByGoogle(google_id: string, email: string): Promise<User | null> {
-    return UserModel.findOne({
-      $or: [
-        { email },
-        { google_id }
-      ]
-    })
-      .select('+email +password +role +google_id')
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean<User>()
-      .exec();
-  }
 
   findProfileById(id: Types.ObjectId): Promise<User | null> {
     return UserModel.findOne({ _id: id, status: true })
@@ -289,16 +138,10 @@ export default class UserRepo
   }
 
 
-  async create(
-    user: User,
-    accessTokenKey: string,
-    refreshTokenKey: string,
-    roleCode: string,
-  ): Promise<{ user: User; keystore: Keystore }> {
+  async create(user: User, accessTokenKey: string, refreshTokenKey: string, roleCode: string,): Promise<{ user: User; keystore: Keystore }> {
     const now = new Date();
-
     const role = await RoleModel.findOne({ code: roleCode })
-      .select('+email +password +telegram_id')
+      .select('+email +password ')
       .lean<Role>()
       .exec();
     if (!role) throw new InternalError('Role must be defined in db!');
@@ -340,7 +183,7 @@ export default class UserRepo
     // user.role = role._id;
 
     // user.type = roleCode
-    user.type = USER_TYPE.ADMIN
+    user.type = USER_TYPE.USER
     user.createdAt = user.updatedAt = now;
     console.log('user...', user)
     // return {user}
@@ -424,7 +267,7 @@ export default class UserRepo
   public static async updateProfilePicByEmail(email: string, user: User): Promise<User | null> {
     user.updatedAt = new Date();
     const user_updated = await UserModel
-      .findOneAndUpdate({ email }, { ...(user.profilePicUrl ? { profilePicUrl: user.profilePicUrl } : { coverPicUrl: user.coverPicUrl }) }, { new: true, runValidators: true })
+      .findOneAndUpdate({ email }, { ...(user.profilePicUrl ? { profilePicUrl: user.profilePicUrl } : {}) }, { new: true, runValidators: true })
       .populate({
         path: 'role',
         select: "-status"
@@ -436,182 +279,7 @@ export default class UserRepo
     return user_updated as any;
   }
 
-  public static async addFcmToken(user: User): Promise<User | null> {
-    user.updatedAt = new Date();
-    const user_updated = await UserModel
-      .findByIdAndUpdate(user._id, { fcm_token: user.fcm_token }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec();
-    console.log(user_updated)
-    // @ts-ignore
-    return user_updated as any;
-  }
 
-  public static async getUsersRecommendations(userData: User): Promise<any> {
-    return await UserModel
-      .find(
-        {
-          _id: { $nin: [...userData.following, userData._id] }, $or: [
-            { businessId: userData.businessId },
-            { business: userData.business }
-          ]
-        },
-        { firstName: 1, lastName: 1, profilePicUrl: 1, _id: 1 }
-      )
-      .exec()
-      .then((foundUsers: any) => {
-        if (foundUsers.length === 0) {
-          return [];
-        }
-        return foundUsers;
-      });
-  }
 
-  public static async updateSkills(_id: ObjectId, user: User): Promise<any> {
-    user.updatedAt = new Date();
-    const user_updated = await UserModel
-      .findByIdAndUpdate(_id, { $set: { skills: user.skills } }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec()
-    // @ts-ignore
-    return user_updated;
-  }
-  public static async updateDescription(_id: ObjectId, user: User): Promise<any> {
-    user.updatedAt = new Date();
-    const user_updated = await UserModel
-      .findByIdAndUpdate(_id, { $set: { bio: user.bio } }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec()
-    // @ts-ignore
-    return user_updated;
-  }
 
-  public static async updateLifeExperience(_id: ObjectId, user: User): Promise<any> {
-    user.updatedAt = new Date();
-    const user_updated = await UserModel
-      .findByIdAndUpdate(_id, { $set: { lifeExperience: user.lifeExperience } }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec()
-    // @ts-ignore
-    return user_updated;
-  }
-  public static async updateCultureGoup(_id: ObjectId, user: User): Promise<any> {
-    user.updatedAt = new Date();
-    const user_updated = await UserModel
-      .findByIdAndUpdate(_id, { $set: { cultureGroup: user.cultureGroup } }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec()
-    // @ts-ignore
-    return user_updated;
-  }
-
-  public static async updateBio(_id: ObjectId, user: User): Promise<any> {
-    user.updatedAt = new Date();
-    const user_updated = await UserModel
-      .findByIdAndUpdate(_id, { $set: { bio: user.bio } }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec()
-    // @ts-ignore
-    return user_updated;
-  }
-  public static async updateMentorshipStatus(_id: ObjectId, user: User): Promise<any> {
-    user.updatedAt = new Date();
-    return await UserModel
-      .findByIdAndUpdate(_id, { $set: { isMentor: user.isMentor } }, { new: true, runValidators: true })
-      .populate({
-        path: 'role',
-        select: "-status"
-      })
-      .lean()
-      .exec()
-  }
-
-  public static async getFollowing(user: User): Promise<any> {
-    return await UserModel
-      .find({ _id: { $in: user.following } })
-      .exec()
-      .then((foundUsers) => {
-        if (foundUsers.length === 0) {
-          return [];
-        }
-        return foundUsers;
-      });
-  }
-
-  public static async updateProfileView(_id: string): Promise<any> {
-    return await UserModel
-      .findByIdAndUpdate(_id, { $inc: { profileviews: 1 } }, { new: true, runValidators: true })
-      .lean()
-      .exec()
-  }
-
-  public static async getUsersWithSurveyPermission(user: User, page: any, limit: any, searchQuery: String): Promise<any> {
-    // Fetch roles matching the specified criteria
-    const rolesResponse = await RoleModel.aggregate([
-      {
-          $match: {
-              features: {
-                  $elemMatch: {
-                      // modifier = survey (_id)
-                      $eq: "650ada07a31f44888597fd68",
-                  },
-                  // modifier != surveyAdminPermission (_id)
-                  $not: { $elemMatch: { $eq: "65550011a4e9427cf525ce44" } }
-              }
-          }
-      },
-      {
-          $group: {
-              _id: null,
-              roles: { $push: "$_id" }
-          }
-      },
-      {
-          $unset: ["_id"]
-      }
-    ]);
-
-    // Extract roleIds from rolesResponse and convert them to string
-    const roleIds: string[] = (rolesResponse[0]?.roles || []).map((roleId: { toString: () => any; }) => roleId.toString()) as string[];
-
-    // Fetch user data based on roleIds and businessId
-    const users = await UserModel.find({ 
-      roleId: { $in: roleIds }, 
-      businessId: user.businessId,
-      $or: [
-        { firstName: { $regex: searchQuery, $options: 'i' } }, // Case-insensitive search by first name
-        { lastName: { $regex: searchQuery, $options: 'i' } }   // Case-insensitive search by last name
-      ],
-    })
-    .select("_id email firstName lastName profilePicUrl roleId businessId")
-    .skip((page - 1) * limit) // Skip items from previous pages
-    .limit(limit); // Limit items to current page
-      
-    // Return the fetched users
-    return users;
-  }
 }

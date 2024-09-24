@@ -18,18 +18,16 @@ export class IndustryRoutes {
   initRoutes(): void {
 
     this.router.post(
-      '/admin',
-      authentication,
-      validator(IndustryValidationSchema),
-      this.controller.addByAdmin
-    )
-
-    this.router.post(
       '/',
       authentication,
-      authorization([RoleCode.SUPER_ADMIN]),
       validator(IndustryValidationSchema),
       this.controller.add
+    )
+    
+    this.router.get(
+      '/admin',
+      authentication,
+      this.controller.getAllforAdmin
     )
 
     this.router.get(

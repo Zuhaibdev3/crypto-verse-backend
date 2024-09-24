@@ -8,9 +8,9 @@ import { PaginationDataDTO } from '../../../dto/common.dto';
 export interface IIndustryService {
 
   add(bodyData: IndustryPayloadDTO, superAdminMetaData: SuperAdminMetaDataDTO): Promise<Industry>
-  getAll(businessId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>
+  getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>
+  getAllforAdmin(paginationData: PaginationDataDTO): Promise<any>
   get(id: string): Promise<Industry | null>
-
   update(bodyData: UpdateIndustryPayloadDTO, metaData: SuperAdminMetaDataDTO, industryId: string): Promise<Industry | null>
   delete(industryId: string): Promise<any>
 

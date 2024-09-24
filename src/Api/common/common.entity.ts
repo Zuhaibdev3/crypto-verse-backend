@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
 import { USER_COLLECTION_NAME, USER_DOCUMENT_NAME } from "../Components/user/user.entity";
-import { BUSINESS_DOCUMENT_NAME } from "../Components/business/business.entity";
 
 export const BaseSuperAdminModel = new mongoose.Schema({
 
@@ -19,7 +18,7 @@ export const BaseModel = new mongoose.Schema({
   
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: USER_DOCUMENT_NAME , required: true},
 
-  businessId: { type: mongoose.Schema.Types.ObjectId, ref: 'businesses' , required: true},
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: USER_DOCUMENT_NAME , required: true},
 
   updatedBy: { type: Schema.Types.ObjectId, ref: USER_COLLECTION_NAME , required: true},
 

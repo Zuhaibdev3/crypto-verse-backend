@@ -14,14 +14,14 @@ export default function authorization(allow_roles: Role['code'][]) {
 
     if (!role) throw new AuthFailureError("You don't have access to this action");
 
-    if(allow_roles.includes(RoleCode.USER) && role?.code !== RoleCode.ADMIN && role?.code !== RoleCode.SUPER_ADMIN ){
+    if (allow_roles.includes(RoleCode.USER) && role?.code !== RoleCode.SUPER_ADMIN) {
 
       return next()
 
-    }else if (!allow_roles.includes(role?.code)) {
+    } else if (!allow_roles.includes(role?.code)) {
 
       throw new AuthFailureError("un-authorized");
-      
+
     }
 
 

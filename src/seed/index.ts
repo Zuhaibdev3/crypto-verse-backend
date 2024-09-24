@@ -13,16 +13,10 @@ import RoleRepo from "../Api/Components/roles/role.repository"
       // @ts-ignore    
       { code: RoleCode.USER },
       // @ts-ignore    
-      { code: RoleCode.ADMIN },
-      // @ts-ignore    
       { code: RoleCode.SUPER_ADMIN },
-      // @ts-ignore    
-      { code: RoleCode.INSTRUCTOR },
     ])
     Logger.info(roles);
     // ====================================================
-
-
 
   } catch (err: any) {
     console.log(err);

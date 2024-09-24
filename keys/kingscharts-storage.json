@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "kingscharts",
+  "private_key_id": "70352d068359d3ff5994bdf4bc0603d761c6e963",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDW90C+fOXCjsyN\nyZ6ZoTTLphzC+5HcUX+og8OnjZVwRf59vx+Zk/ee6VjiFSO0sDaN8IG93Zp1VNjv\nC59RH//W8p4w37p+opiuFf3qneJ7z5bkD9PwtuQJ3yjlfp2nLSlEbvqgoLINYsdV\nzfu2z8veyOtUQQIYShuJlXXRlI+GowkF9T/wFcVFeuvI9SJaqRjqZ0+Y4bI5tsjr\nG5k5FGCWVHVk0hD+WA+IA4BnArDXo+b8trYFRc7wtBaVOVpQFk7VQW06Y1PAAQYn\nf01uFtI2ppqzA8QuW0HdSW4lrcSCLAZyKtzplvj4ZeDfFiGn2qH2HW+iaenty+ff\nja0wKuaLAgMBAAECggEAV6c8RDAjc8DMkegrfpNoNr4GLk9sO30T47/OsOyficdQ\nrS+YkAPwzWBy+MUL6SqNJDV0gdnxmHQ/fMGtdePpa1lEvcMMhYSBY0LeZaN5bWjJ\nKzd1AUtiEtBnGaUWXcuhbyEdmw/Lan/jrg4u3G1AwRgGNTXIx+S389L41ruQBqKG\nothDPcBKu7OxbQDqoogMieSJlEQBhkqEsMDouLReOHOyQOfHHCilmfglyMqkFa0S\n4v0Idh1DzWHGkCUMs1nfrTtdVMFLqH4ZRm1WL/ACwintavFOb/P2Ov3NTTqDLcG+\nb8iu7By1flmS+0ufR1ASWxadnSixIapu19Wtx53CmQKBgQDze280bGz3jYMQxxIw\n4E0ZD55JnSq+3daJOTjB3L3kbWWuk7uw2F3o//WqeKvWJF74RWfMyMfKj09YMBuK\nkwEtwzHCio3ggLKbMEwlz0XCb6R8vXcop7ITbeUIKtnLLd4kv5sto2trerPPVWFW\nizUctIgOcxBt8tahjI2n7A5MdwKBgQDiBIDyncmyI3fb65w6mweGP+sG6hUQcLFA\nK9ce4wwvYTvZQITW9QlWNDvIVoFrGkKA37dpkzEVNLU+NX1VMMCu7ToDc6hEn+bB\n6BFIz8bkDb0ZTf4EyTUovFE+3/pMdb0DvSo3+D4GuOrCJGAS9fNXEhPnBDMJtZ+7\nbLd8fjK/jQKBgQCo1yGoUr/FcqY+ji05I3GTPVdgaNJphN/uTHXlSTONIadvRhbT\nbVbB6izrR76xQotw0oBGa7zP5Ez7NHEEySf6Ge95nicAVX6FSxqi5XbUfCKuNZxZ\n3uAHxR8baMuar3XqOcxb+4TUBUSHNAfJwcLU4wOuMXBlLg5T/GmG1pSbxQKBgQDK\n/nqF7TuS2BI1niZB6K1YYR4IpsLmciBwXy+lmQx/nVfwZucoXQnWt7Ed3Lv94qbq\nMoP7uWxy/FTwG4CGu/PC6GObaAwwHmFVtMWZXKvodYJqMMc9qy0oegKKcwXOGEz8\nB7DcdgPXa8vFNIBpZyb4A8+GRBpG1S4yWpFtqbaQnQKBgEjch6RFeyOTZ3BVP+Tv\nr/J+qdrJ3zWLp8H+WTGos5a3QdD3txQmkuomqqiUj7prRIQLTihCxCpTr4QMsUlU\nxtwVAliwkAmBvl5mxn+DAAHsc6U9g8RReWKxHaS5K5DMAyAn7Sq0Cyq+iXiuUiCJ\np9YK9rH42SiYQSIddIxpuv87\n-----END PRIVATE KEY-----\n",
+  "client_email": "kingscharts-media@kingscharts.iam.gserviceaccount.com",
+  "client_id": "115191122035566471387",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/kingscharts-media%40kingscharts.iam.gserviceaccount.com"
+}
