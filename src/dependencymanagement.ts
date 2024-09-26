@@ -18,6 +18,12 @@ import { IndustryService } from "./Api/Components/industry/industry.service";
 import IIndustryRepository from "./Api/Components/industry/iindustry.repository";
 import IndustryRepository from "./Api/Components/industry/industry.repository";
 
+import { IMidJourneyService } from "./Api/Components/midJourney/imidJourney.service";
+import { MidJourneyService } from "./Api/Components/midJourney/midJourney.service";
+import IMidJourneyRepository from "./Api/Components/midJourney/imidJourney.repository";
+import MidJourneyRepository from "./Api/Components/midJourney/midJourney.repository";
+
+
 
 let container = new Container();
 container
@@ -40,13 +46,20 @@ container
 container
   .bind<ITokenService>(SERVICE_IDENTIFIER.TokenService)
   .to(TokenService);
-
 container
   .bind<IIndustryService>(SERVICE_IDENTIFIER.IndustryService)
   .to(IndustryService);
 container
   .bind<IIndustryRepository>(SERVICE_IDENTIFIER.IndustryRepository)
   .to(IndustryRepository);
+
+  container
+  .bind<IMidJourneyService>(SERVICE_IDENTIFIER.MidJourneyService)
+  .to(MidJourneyService);
+container
+  .bind<IMidJourneyRepository>(SERVICE_IDENTIFIER.MidJourneyRepository)
+  .to(MidJourneyRepository);
+
 
 export function resolve<T>(type: symbol): T {
   return container.get<T>(type)

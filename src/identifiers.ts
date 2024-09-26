@@ -10,6 +10,8 @@ const SERVICE_IDENTIFIER = {
   TokenService: Symbol.for("ITokenService"),
   IndustryService: Symbol.for("IIndustryService"),
   IndustryRepository: Symbol.for("IIndustryRepository"),
+  MidJourneyService: Symbol.for("IMidJourneyService"),
+  MidJourneyRepository: Symbol.for("IMidJourneyRepository"),
 
 }
 

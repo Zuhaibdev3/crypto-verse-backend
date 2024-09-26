@@ -3,6 +3,6 @@
  * Do not modify this file manually
  */
 
-export * from './Access';
-export * from './Industry';
-export * from './MidJourney';
+export interface MidJourneyPayloadDTO {
+  prompt: string;
+}
