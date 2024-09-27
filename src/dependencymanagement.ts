@@ -18,6 +18,12 @@ import { IndustryService } from "./Api/Components/industry/industry.service";
 import IIndustryRepository from "./Api/Components/industry/iindustry.repository";
 import IndustryRepository from "./Api/Components/industry/industry.repository";
 
+import { IDalleService } from "./Api/Components/dalle/idalle.service";
+import { DalleService } from "./Api/Components/dalle/dalle.service";
+import IDalleRepository from "./Api/Components/dalle/idalle.repository";
+import DalleRepository from "./Api/Components/dalle/dalle.repository";
+
+
 
 let container = new Container();
 container
@@ -40,13 +46,20 @@ container
 container
   .bind<ITokenService>(SERVICE_IDENTIFIER.TokenService)
   .to(TokenService);
-
 container
   .bind<IIndustryService>(SERVICE_IDENTIFIER.IndustryService)
   .to(IndustryService);
 container
   .bind<IIndustryRepository>(SERVICE_IDENTIFIER.IndustryRepository)
   .to(IndustryRepository);
+
+  container
+  .bind<IDalleService>(SERVICE_IDENTIFIER.DalleService)
+  .to(DalleService);
+container
+  .bind<IDalleRepository>(SERVICE_IDENTIFIER.DalleRepository)
+  .to(DalleRepository);
+
 
 export function resolve<T>(type: symbol): T {
   return container.get<T>(type)

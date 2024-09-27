@@ -3,6 +3,6 @@
  * Do not modify this file manually
  */
 
-export * from './Access';
-export * from './Dalle';
-export * from './Industry';
+export interface DallePayloadDTO {
+  prompt: string;
+}
