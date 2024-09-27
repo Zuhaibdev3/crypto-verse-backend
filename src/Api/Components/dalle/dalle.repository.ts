@@ -1,13 +1,13 @@
-import Industry, { MidJourneyModal } from './midJourney.entity';
+import Dalle, { DalleModal } from './dalle.entity';
 import Repository from '../../../repository/repository';
 import { injectable } from 'inversify';
 import { DatabaseId } from '../../../../types';
-import IMidJourneyRepository from './imidJourney.repository';
+import IDalleRepository from './idalle.repository';
 
 
 @injectable()
-export default class MidJourneyRepository extends Repository<Industry> implements IMidJourneyRepository {
-  model = MidJourneyModal
+export default class DalleRepository extends Repository<Dalle> implements IDalleRepository {
+  model = DalleModal
   // async getIndustrysByBusinessId(businessId: DatabaseId, page: number, limit: number): Promise<any> {
   //   const [industry, total] = await Promise.all([
   //     this.findAllWithPopulateAndPagination({ businessId }, 'jobId applicantId salaryRateId', page, limit),

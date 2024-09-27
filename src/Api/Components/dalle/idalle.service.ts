@@ -2,11 +2,11 @@ import { ObjectId } from 'mongoose';
 import { IndustryPayloadDTO, UpdateIndustryPayloadDTO } from '../../../Interface/payloadInterface';
 import { DatabaseId } from '../../../../types';
 import { SuperAdminMetaDataDTO } from '../../../dto/index.dto';
-import Industry from './midJourney.entity';
+import Industry from './dalle.entity';
 import { PaginationDataDTO } from '../../../dto/common.dto';
-import {MidJourneyPayloadDTO } from "../../../Interface/payloadInterface";
+import { MidJourneyPayloadDTO } from "../../../Interface/payloadInterface";
 
-export interface IMidJourneyService {
+export interface IDalleService {
 
   add(bodyData: MidJourneyPayloadDTO): Promise<Industry>
   getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>

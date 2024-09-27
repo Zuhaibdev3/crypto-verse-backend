@@ -18,10 +18,10 @@ import { IndustryService } from "./Api/Components/industry/industry.service";
 import IIndustryRepository from "./Api/Components/industry/iindustry.repository";
 import IndustryRepository from "./Api/Components/industry/industry.repository";
 
-import { IMidJourneyService } from "./Api/Components/midJourney/imidJourney.service";
-import { MidJourneyService } from "./Api/Components/midJourney/midJourney.service";
-import IMidJourneyRepository from "./Api/Components/midJourney/imidJourney.repository";
-import MidJourneyRepository from "./Api/Components/midJourney/midJourney.repository";
+import { IDalleService } from "./Api/Components/dalle/idalle.service";
+import { DalleService } from "./Api/Components/dalle/dalle.service";
+import IDalleRepository from "./Api/Components/dalle/idalle.repository";
+import DalleRepository from "./Api/Components/dalle/dalle.repository";
 
 
 
@@ -54,11 +54,11 @@ container
   .to(IndustryRepository);
 
   container
-  .bind<IMidJourneyService>(SERVICE_IDENTIFIER.MidJourneyService)
-  .to(MidJourneyService);
+  .bind<IDalleService>(SERVICE_IDENTIFIER.DalleService)
+  .to(DalleService);
 container
-  .bind<IMidJourneyRepository>(SERVICE_IDENTIFIER.MidJourneyRepository)
-  .to(MidJourneyRepository);
+  .bind<IDalleRepository>(SERVICE_IDENTIFIER.DalleRepository)
+  .to(DalleRepository);
 
 
 export function resolve<T>(type: symbol): T {

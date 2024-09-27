@@ -1,15 +1,15 @@
 import { Router } from 'express';
-import {  MidJourneyController } from './midJourney.controller';
+import {  DalleController } from './idalle.controller';
 import validator, { ValidationSource } from '../../../validations/validator';
 import authentication from '../../../middleware/authentication';
 import authorization from '../../../middleware/authorization';
 import { RoleCode } from '../../../database/model/Role';
-import { MidJourneyValidationSchema } from '../../../validations/payloadSchema/MidJourneySchema';
+import { DalleValidationSchema } from '../../../validations/payloadSchema/DalleSchema';
 
-export class MidJourneyRoutes {
+export class DalleRoutes {
 
   readonly router: Router = Router();
-  readonly controller: MidJourneyController = new MidJourneyController()
+  readonly controller: DalleController = new DalleController()
 
   constructor() {
     this.initRoutes();
@@ -20,7 +20,7 @@ export class MidJourneyRoutes {
     this.router.post(
       '/',
       // authentication,
-      validator(MidJourneyValidationSchema),
+      validator(DalleValidationSchema),
       this.controller.generateImage
     )
     

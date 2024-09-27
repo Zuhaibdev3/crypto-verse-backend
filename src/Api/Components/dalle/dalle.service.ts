@@ -1,32 +1,32 @@
 import { DataCopier } from "../../../utils/dataCopier";
-import Industry from './midJourney.entity';
-import { IMidJourneyService } from './imidJourney.service';
+import Industry from './dalle.entity';
+import { IDalleService } from './idalle.service';
 import { inject, injectable } from 'inversify';
-import IMidJourneyRepository from './imidJourney.repository';
+import IDalleRepository from './idalle.repository';
 import { BadRequestError } from '../../../core/ApiError';
 import SERVICE_IDENTIFIER from '../../../identifiers';
 import { UpdateIndustryPayloadDTO } from "../../../Interface/payloadInterface";
-import { MidJourneyPayloadDTO } from "../../../Interface/payloadInterface";
+import { DallePayloadDTO } from "../../../Interface/payloadInterface";
 import { DatabaseId } from "../../../../types";
 import { SuperAdminMetaDataDTO } from "../../../dto/index.dto";
 import { PaginationDataDTO } from "../../../dto/common.dto";
 import { OpenAI } from 'openai';  // Updated import
 
 @injectable()
-export class MidJourneyService implements IMidJourneyService {
+export class DalleService implements IDalleService {
   private openai: OpenAI;
 
 
   constructor(
-    @inject(SERVICE_IDENTIFIER.MidJourneyRepository)
-    private MidJourneyRepository: IMidJourneyRepository,
+    @inject(SERVICE_IDENTIFIER.DalleRepository)
+    private DalleRepository: IDalleRepository,
   ) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_AUTHKEY,
     });
   }
 
-  async add(bodyData: MidJourneyPayloadDTO): Promise<Industry> {
+  async add(bodyData: DallePayloadDTO): Promise<Industry> {
     try {
       return await this.openai.images.generate({ prompt: bodyData?.prompt, n: 1, quality: "hd", model: "dall-e-3", style: "natural", size: '1024x1024', });
     } catch (error) {
@@ -36,7 +36,7 @@ export class MidJourneyService implements IMidJourneyService {
 
   async getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any> {
     try {
-      return this.MidJourneyRepository.findAllWithPagination({ $or: [{ userId: userId }, { userId: null }] }, paginationData.page, paginationData.limit)
+      return this.DalleRepository.findAllWithPagination({ $or: [{ userId: userId }, { userId: null }] }, paginationData.page, paginationData.limit)
     } catch (error) {
       throw new BadRequestError('No industry found')
     }
@@ -44,7 +44,7 @@ export class MidJourneyService implements IMidJourneyService {
 
   async getAllforAdmin(paginationData: PaginationDataDTO): Promise<any> {
     try {
-      return this.MidJourneyRepository.findAllWithPagination({}, paginationData.page, paginationData.limit)
+      return this.DalleRepository.findAllWithPagination({}, paginationData.page, paginationData.limit)
     } catch (error) {
       throw new BadRequestError('No industry found')
     }
@@ -52,7 +52,7 @@ export class MidJourneyService implements IMidJourneyService {
 
   async get(industryId: string): Promise<Industry | null> {
     try {
-      return this.MidJourneyRepository.findById(industryId)
+      return this.DalleRepository.findById(industryId)
     } catch (error) {
       throw new BadRequestError('No industry found')
     }
@@ -66,7 +66,7 @@ export class MidJourneyService implements IMidJourneyService {
 
     let result!: any
     try {
-      result = await this.MidJourneyRepository.updateOne({ _id: industryId }, industryUpdateData)
+      result = await this.DalleRepository.updateOne({ _id: industryId }, industryUpdateData)
       if (!result) throw new BadRequestError('No industry found')
     } catch (error) {
       throw new BadRequestError('industry cannot be update')

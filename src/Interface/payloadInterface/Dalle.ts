@@ -3,6 +3,6 @@
  * Do not modify this file manually
  */
 
-export interface MidJourneyPayloadDTO {
+export interface DallePayloadDTO {
   prompt: string;
 }
