@@ -4,11 +4,11 @@ import { DatabaseId } from '../../../../types';
 import { SuperAdminMetaDataDTO } from '../../../dto/index.dto';
 import Industry from './dalle.entity';
 import { PaginationDataDTO } from '../../../dto/common.dto';
-import { MidJourneyPayloadDTO } from "../../../Interface/payloadInterface";
+import { DallePayloadDTO } from "../../../Interface/payloadInterface";
 
 export interface IDalleService {
 
-  add(bodyData: MidJourneyPayloadDTO): Promise<Industry>
+  add(bodyData: DallePayloadDTO): Promise<Industry>
   getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>
   getAllforAdmin(paginationData: PaginationDataDTO): Promise<any>
   get(id: string): Promise<Industry | null>
