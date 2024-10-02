@@ -9,6 +9,7 @@ import IUserRepository from './iuser.repository';
 import Repository from '../../repository/repository';
 import { DatabaseId } from '../../../types';
 import { User, UserModel, USER_TYPE } from '../../Api/Components/user/user.entity';
+import { UpdateWalletDetailPayloadDTO } from '../../Interface/payloadInterface';
 // import Role, { RoleModel } from '../../database/model/Role';
 
 export const selectString = "+email +password +role ";
@@ -79,6 +80,18 @@ export default class UserRepo
     return a
   }
 
+  async findByWalletAddress(walletAddress: string): Promise<User | null> {
+    let a: any = await UserModel.findOne({ walletAddress: walletAddress, })
+      .select('+walletAddress')
+      .populate({
+        path: 'role roleId',
+        // select: "-status"
+      })
+      .lean<User>()
+      .exec();
+    if (!a) return null;
+    return a
+  }
 
   findProfileById(id: Types.ObjectId): Promise<User | null> {
     return UserModel.findOne({ _id: id, status: true })
@@ -141,12 +154,11 @@ export default class UserRepo
   async create(user: User, accessTokenKey: string, refreshTokenKey: string, roleCode: string,): Promise<{ user: User; keystore: Keystore }> {
     const now = new Date();
     const role = await RoleModel.findOne({ code: roleCode })
-      .select('+email +password ')
+      .select('+walletAddress role')
       .lean<Role>()
       .exec();
     if (!role) throw new InternalError('Role must be defined in db!');
 
-    user.password = user.password ? bcrypt.hashSync(user.password, 10) : null;
     user.role = role._id;
     user.createdAt = user.updatedAt = now;
 
@@ -162,41 +174,41 @@ export default class UserRepo
 
   }
 
-  async createUser(
-    user: User,
-    roleCode: any,
-  ): Promise<{ user: User }> {
-    const now = new Date();
+  // async createUser(
+  //   user: User,
+  //   roleCode: any,
+  // ): Promise<{ user: User }> {
+  //   const now = new Date();
 
-    // const role = await RoleModel.findOne({
-    //   $and: [
-    //     { code: roleCode },
-    //     { businessId: user.businessId }
-    //   ]
-    // })
-    //   .select('+email +password +telegram_id')
-    //   .lean<Role>()
-    //   .exec();
-    // if (!role) throw new InternalError('Role must be defined in db!');
+  //   // const role = await RoleModel.findOne({
+  //   //   $and: [
+  //   //     { code: roleCode },
+  //   //     { businessId: user.businessId }
+  //   //   ]
+  //   // })
+  //   //   .select('+email +password +telegram_id')
+  //   //   .lean<Role>()
+  //   //   .exec();
+  //   // if (!role) throw new InternalError('Role must be defined in db!');
 
-    user.password = user.password ? bcrypt.hashSync(user.password, 10) : null;
-    // user.role = role._id;
+  //   user.password = user.password ? bcrypt.hashSync(user.password, 10) : null;
+  //   // user.role = role._id;
 
-    // user.type = roleCode
-    user.type = USER_TYPE.USER
-    user.createdAt = user.updatedAt = now;
-    console.log('user...', user)
-    // return {user}
-    const createdUser = await UserModel.create(user);
-    createdUser.populate({
-      path: 'role',
-      select: "-status"
-    })
-    // return { user: {} }
-    // const keystore = await KeystoreRepo.create(createdUser._id, accessTokenKey, refreshTokenKey);
-    return { user: createdUser.toObject() };
+  //   // user.type = roleCode
+  //   user.type = USER_TYPE.USER
+  //   user.createdAt = user.updatedAt = now;
+  //   console.log('user...', user)
+  //   // return {user}
+  //   const createdUser = await UserModel.create(user);
+  //   createdUser.populate({
+  //     path: 'role',
+  //     select: "-status"
+  //   })
+  //   // return { user: {} }
+  //   // const keystore = await KeystoreRepo.create(createdUser._id, accessTokenKey, refreshTokenKey);
+  //   return { user: createdUser.toObject() };
 
-  }
+  // }
 
 
   async update(

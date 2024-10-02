@@ -12,17 +12,5 @@ export class UserRoutes {
     this.initRoutes();
   }
 
-  initRoutes(): void {
-
-    this.router.get(
-      '/',
-      this.controller.get
-    )
-
-    this.router.put(
-      '/:id',
-      this.controller.update
-    )
-
-  }
+  initRoutes(): void { }
 }
