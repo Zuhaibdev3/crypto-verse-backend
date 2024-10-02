@@ -48,6 +48,7 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "reflect-metadata": "^0.1.13",
+    "simple-update-notifier": "1.0.0",
     "uuid": "^8.3.2",
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.7.1"

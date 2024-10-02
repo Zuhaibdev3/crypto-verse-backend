@@ -21,3 +21,4 @@ package-lock.json
 # Environment varibles
 *.env
 *.env.*
+.vercel
