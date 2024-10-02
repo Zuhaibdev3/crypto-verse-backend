@@ -39,6 +39,8 @@ export class AccessRoutes {
       validator(UpdateWalletDetailValidationSchema),
       this.controller.updateProfle
     )
+
+    
     //   this.router.post(
     //     '/refresh',
     //     authentication,

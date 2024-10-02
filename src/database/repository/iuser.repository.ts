@@ -14,7 +14,7 @@ export default interface IUserRepo {
   findByEmail(email: string): Promise<User | null>
   findByWalletAddress(walletAddress: string): Promise<User | null>
   updateInfo(_id: string, user: User | UpdateWalletDetailPayloadDTO): Promise<User | UpdateWalletDetailPayloadDTO | null>
-  createUser(user: User, roleCode: string): Promise<{ user: User }>
+  // createUser(user: User, roleCode: string): Promise<{ user: User }>
   update(user: User, accessTokenKey: string, refreshTokenKey: string): Promise<{ user: User; keystore: Keystore }>
   delete(id: Types.ObjectId): Promise<User | null>
 }
