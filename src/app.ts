@@ -10,10 +10,6 @@ import "./joi.types"
 import "./database"
 
 config();
-// Run simple-update-notifier in non-production environments
-if (process.env.NODE_ENV !== 'production') {
-  require('simple-update-notifier')();
-}
 
 (async function main(): Promise<void> {
   try {
