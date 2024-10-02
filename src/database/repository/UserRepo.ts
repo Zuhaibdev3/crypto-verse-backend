@@ -9,6 +9,7 @@ import IUserRepository from './iuser.repository';
 import Repository from '../../repository/repository';
 import { DatabaseId } from '../../../types';
 import { User, UserModel, USER_TYPE } from '../../Api/Components/user/user.entity';
+import { UpdateWalletDetailPayloadDTO } from '../../Interface/payloadInterface';
 // import Role, { RoleModel } from '../../database/model/Role';
 
 export const selectString = "+email +password +role ";
@@ -79,6 +80,18 @@ export default class UserRepo
     return a
   }
 
+  async findByWalletAddress(walletAddress: string): Promise<User | null> {
+    let a: any = await UserModel.findOne({ walletAddress: walletAddress, })
+      .select('+walletAddress')
+      .populate({
+        path: 'role roleId',
+        // select: "-status"
+      })
+      .lean<User>()
+      .exec();
+    if (!a) return null;
+    return a
+  }
 
   findProfileById(id: Types.ObjectId): Promise<User | null> {
     return UserModel.findOne({ _id: id, status: true })

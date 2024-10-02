@@ -8,9 +8,9 @@ import { NotFoundError } from '../../core/ApiError';
 export const registerApiRoutes = (router: Router, prefix = '', superAdminPrefix = '', userPrefix = ''): void => {
 
   router.get(prefix, (req: Request, res: Response) => res.send('❤'));
-  router.use(`${prefix}`, new AccessRoutes().router)
+  router.use(`${userPrefix}`, new AccessRoutes().router)
   router.use(`${prefix}/industry`, new IndustryRoutes().router)
-  router.use(`${prefix}/dalle`, new DalleRoutes().router)
+  router.use(`${userPrefix}/dalle`, new DalleRoutes().router)
 
   router.use((req: Request, res: Response, next: NextFunction) => next(new NotFoundError()));
 }

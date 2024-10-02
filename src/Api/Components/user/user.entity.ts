@@ -12,12 +12,17 @@ export enum USER_TYPE {
 
 export class User implements IUser {
   _id: Schema.Types.ObjectId = new ObjectId('');
+  walletAddress: string
+  fullName?: string | undefined = '';
+  bio?: string | undefined = '';
+  websiteLink?: string | undefined = '';
+  twitterUserName?: string | undefined = '';
+  discordUserName?: string | undefined = '';
+  instagramUserName?: string | undefined = '';
   email?: string | undefined = '';
-  password?: string | null | undefined = '';
   profilePicUrl?: string | undefined = '';
   role?: Role | undefined;
   roleId?: Schema.Types.ObjectId | null = new ObjectId('');
-  verified?: boolean | undefined = true;
   createdAt: Date = new Date();
   updatedAt?: Date | undefined = new Date();
   type: USER_TYPE.SUPER_ADMIN | USER_TYPE.USER = USER_TYPE.USER
@@ -27,13 +32,17 @@ export class User implements IUser {
 
 export default interface IUser {
   _id: Schema.Types.ObjectId,
+  walletAddress: string
+  fullName?: string
+  bio?: string
+  websiteLink?: string
+  twitterUserName?: string
+  discordUserName?: string
+  instagramUserName?: string
   email?: string;
-  password?: string | null;
   profilePicUrl?: string;
   role?: Role;
   roleId?: Schema.Types.ObjectId | null;
-  verified?: boolean;
-  status?: boolean;
   createdAt: Date;
   updatedAt?: Date;
   type: USER_TYPE.SUPER_ADMIN | USER_TYPE.USER
@@ -44,19 +53,41 @@ export default interface IUser {
 
 const schema = new Schema<IUser>(
   {
+    walletAddress: {
+      type: Schema.Types.String,
+      required: true,
+    },
+    fullName: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    bio: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    websiteLink: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    twitterUserName: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    discordUserName: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    instagramUserName: {
+      type: Schema.Types.String,
+      required: false,
+    },
     email: {
       type: Schema.Types.String,
       required: false,
-      // unique: true,
+      unique: true,
       trim: true,
-      // select: false,
     },
 
-    password: {
-      type: Schema.Types.String,
-      required: false,
-      select: false,
-    },
     profilePicUrl: {
       type: Schema.Types.String,
       required: false,
@@ -74,23 +105,17 @@ const schema = new Schema<IUser>(
       required: false,
     },
 
-    createdBy: { type: Schema.Types.ObjectId, required: false },
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      required: false
+    },
 
     type: {
       type: Schema.Types.String,
       required: true,
-      // enum: [USER_TYPE.ADMIN, USER_TYPE.SUPER_ADMIN, USER_TYPE.USER]
+      // enum: [USER_TYPE.ADMIN, USER_TYPE.USER]
     },
 
-    verified: {
-      type: Schema.Types.Boolean,
-      default: false,
-    },
-
-    status: {
-      type: Schema.Types.Boolean,
-      default: true,
-    },
     createdAt: {
       type: Date,
       required: false,

@@ -3,7 +3,19 @@
  * Do not modify this file manually
  */
 
-export interface AppSigninPayloadDTO {
-  email: string;
-  password: string;
+export interface UpdateWalletDetailPayloadDTO {
+  bio?: string;
+  discordUserName?: string;
+  email?: string;
+  fullName?: string;
+  instagramUserName?: string;
+  profilePicUrl?: string;
+  twitterUserName?: string;
+  websiteLink?: string;
+}
+
+export interface WalletPayloadDTO {
+  role: string;
+  type: string;
+  walletAddress: string;
 }
