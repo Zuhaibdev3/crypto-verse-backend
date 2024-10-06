@@ -153,20 +153,23 @@ export default class UserRepo
 
   async create(user: User, accessTokenKey: string, refreshTokenKey: string, roleCode: string,): Promise<{ user: User; keystore: Keystore }> {
     const now = new Date();
+    console.log("Trigger hua 3")
     const role = await RoleModel.findOne({ code: roleCode })
       .select('+walletAddress role')
       .lean<Role>()
       .exec();
     if (!role) throw new InternalError('Role must be defined in db!');
+    console.log("Trigger hua 2")
 
     user.role = role._id;
     user.createdAt = user.updatedAt = now;
+    console.log("Trigger hua 1 ")
 
     const createdUser = await UserModel.create(user);
-    createdUser.populate({
-      path: 'role',
-      select: "-status"
-    })
+    console.log("Trigger hua 0 ")
+
+    console.log(createdUser, "createdUsercreatedUsercreatedUsercreatedUser")
+    createdUser.populate({ path: 'role', select: "-status" })
     //@ts-ignore
     const keystore = await KeystoreRepo.create(createdUser._id, accessTokenKey, refreshTokenKey);
 

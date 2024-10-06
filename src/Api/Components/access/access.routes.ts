@@ -34,9 +34,9 @@ export class AccessRoutes {
     )
 
     this.router.put(
-      '/',
+      '/update-profile',
       authentication,
-      validator(UpdateWalletDetailValidationSchema),
+      // validator(UpdateWalletDetailValidationSchema),
       this.controller.updateProfle
     )
 
