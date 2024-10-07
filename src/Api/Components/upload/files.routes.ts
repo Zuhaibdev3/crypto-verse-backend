@@ -1,8 +1,5 @@
 import { Router } from 'express';
-// import validator, { ValidationSource } from '../../../helpers/validator';
-// import schema from './schema';
 import { FileController } from "./files.controller"
-// import formidableMiddleware from "express-formidable"
 import authentication from '../../../middleware/authentication';
 
 export class FileRoutes {
@@ -14,14 +11,11 @@ export class FileRoutes {
         this.initRoutes();
     }
 
-
     initRoutes(): void {
-       
 
         this.router.post(
             '/image',
             authentication,
-            // validator(IndustryValidationSchema),
             this.controller.uploadOnCloudinary
         )
     }

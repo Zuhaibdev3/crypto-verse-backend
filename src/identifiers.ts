@@ -12,6 +12,7 @@ const SERVICE_IDENTIFIER = {
   IndustryRepository: Symbol.for("IIndustryRepository"),
   DalleService: Symbol.for("IDalleService"),
   DalleRepository: Symbol.for("IDalleRepository"),
+  MulterService: Symbol.for('MulterService'),
   FilesService: Symbol.for("IFilesService"),
   FilesRepository: Symbol.for("IFilesRepository"),
 }

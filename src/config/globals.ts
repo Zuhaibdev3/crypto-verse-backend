@@ -34,3 +34,9 @@ export const tokenInfo = {
   issuer: process.env.DB_URI || 'ZeltaTech',
   audience: process.env.DB_URI || 'ZeltaTech',
 };
+
+export const cloudinaryInfo = {
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.APIKEY,
+  api_secret: process.env.APISECRET
+}

@@ -1,6 +1,6 @@
 import mongoose, { model, Schema, Document } from 'mongoose';
 import { ObjectId } from '../../../../constants';
-import { USER_DOCUMENT_NAME } from '../user/user.entity';
+import { USER_COLLECTION_NAME, User } from '../user/user.entity';
 
 export const FILES_DOCUMENT_NAME = 'Files';
 export const FILES_COLLECTION_NAME = 'files';
@@ -8,12 +8,11 @@ export const FILES_COLLECTION_NAME = 'files';
 export default class Files implements IFiles {
   name: string = ""; // Only the "name" field is included
   userId: Schema.Types.ObjectId | null = new ObjectId(" ")
+
   path: string = '';
   fileName: string = '';
   fileSize: string = '';
   fileType: string = '';
-  createdBy: Schema.Types.ObjectId | undefined = new ObjectId('');
-  isDeleted: boolean = false
 }
 
 export interface IFiles {
@@ -23,12 +22,15 @@ export interface IFiles {
   fileName: string,
   fileSize: string,
   fileType: string,
-  createdBy: Schema.Types.ObjectId | undefined,
-  isDeleted: boolean
 }
 
 const schema = new Schema<IFiles>(
   {
+    name: {
+      type: Schema.Types.String,
+      required: true,
+      unique: true,
+    },
     path: {
       type: Schema.Types.String,
       required: true,
@@ -46,14 +48,9 @@ const schema = new Schema<IFiles>(
       type: Schema.Types.String,
       required: true,
     },
-    createdBy: {
+    userId: {
       type: Schema.Types.ObjectId,
-      ref: USER_DOCUMENT_NAME,
-      // required: true,
-    },
-    isDeleted: {
-      type: Schema.Types.Boolean,
-      default: false
+      ref: USER_COLLECTION_NAME
     }
   },
   {

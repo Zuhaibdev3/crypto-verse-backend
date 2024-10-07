@@ -7,19 +7,19 @@ import { IFilesService } from "./ifiles.service";
 import SERVICE_IDENTIFIER from "../../../identifiers";
 
 export class FileController {
+
   getFilesService(): IFilesService {
     return resolve<IFilesService>(SERVICE_IDENTIFIER.FilesService);
   }
   filesService = this.getFilesService();
-
   uploadOnCloudinary = asyncHandler(
     async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
-      console.log("zuhaib")
-      const files = req.files
-      const uploaded = await this.filesService.upload(req?.files)
+      let { _id: userId } = req.user
+      const file = await this.filesService.upload(req, res, userId); // Handing off the file to the service
+      return new SuccessResponse('Image uploaded successfully', file).send(res);
+    }
+  );
 
-      new SuccessResponse('Image Upload successfully', { res: "zuhaib" }).send(res)
-    })
 
   // imageUpload = asyncHandler(
   //   async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
