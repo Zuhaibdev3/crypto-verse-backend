@@ -22,6 +22,11 @@ import { IDalleService } from "./Api/Components/dalle/idalle.service";
 import { DalleService } from "./Api/Components/dalle/dalle.service";
 import IDalleRepository from "./Api/Components/dalle/idalle.repository";
 import DalleRepository from "./Api/Components/dalle/dalle.repository";
+import { IFilesService } from "./Api/Components/upload/ifiles.service";
+import { FilesService } from "./Api/Components/upload/files.service";
+import IFilesRepository from "./Api/Components/upload/ifiles.repository";
+import FilesRepository from "./Api/Components/upload/files.repository";
+import { MulterService } from './Api/Components/multer/multer.service';
 
 
 
@@ -53,12 +58,25 @@ container
   .bind<IIndustryRepository>(SERVICE_IDENTIFIER.IndustryRepository)
   .to(IndustryRepository);
 
-  container
+container
   .bind<IDalleService>(SERVICE_IDENTIFIER.DalleService)
   .to(DalleService);
 container
   .bind<IDalleRepository>(SERVICE_IDENTIFIER.DalleRepository)
   .to(DalleRepository);
+
+container
+  .bind<MulterService>(SERVICE_IDENTIFIER.MulterService)
+  .to(MulterService);
+
+container
+  .bind<IFilesService>(SERVICE_IDENTIFIER.FilesService)
+  .to(FilesService);
+  
+container
+  .bind<IFilesRepository>(SERVICE_IDENTIFIER.FilesRepository)
+  .to(FilesRepository);
+
 
 
 export function resolve<T>(type: symbol): T {

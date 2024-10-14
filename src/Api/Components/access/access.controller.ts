@@ -37,8 +37,8 @@ export class AccessController {
         }).send(res);
       }
       else {
-        const { tokens, user: createdUser } = await this.accessService.generate('SIGNUP', req.body as User)
-        Logger.info("Login Success", { user: _.pick(createdUser, ['_id', 'name', 'role', 'email',]) })
+        const { tokens, user: createdUser } = await this.accessService.generate('SIGNUP', bodyData as WalletPayloadDTO)
+        Logger.info("Login Success", { user: _.pick(createdUser, ['_id', 'name', 'role',]) })
         new SuccessResponse('Connected To Wallet', {
           user: _.pick(createdUser, ['_id', "walletAddress", "fullName", "role", "profilePicUrl"]),
           tokens,

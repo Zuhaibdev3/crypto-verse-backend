@@ -10,6 +10,7 @@ import { IAccessService } from './iaccess.service';
 import IUserRepo from '../../../database/repository/iuser.repository';
 import _ from 'lodash';
 import { User } from "../user/user.entity";
+import { DataCopier } from "../../../utils/dataCopier";
 
 @injectable()
 export class AccessService implements IAccessService {
@@ -23,9 +24,10 @@ export class AccessService implements IAccessService {
   async generate(type: 'SIGNUP' | 'SIGNIN', user: User): Promise<{ tokens: Tokens, user: User }> {
     const accessTokenKey = generateTokenKey();
     const refreshTokenKey = generateTokenKey();
+    const userData = DataCopier.copy(User, user)
     if (type === 'SIGNUP') {
       const { user: createdUser } = await this.userRepository.create(
-        user as User,
+        userData,
         accessTokenKey,
         refreshTokenKey,
         // @ts-ignore

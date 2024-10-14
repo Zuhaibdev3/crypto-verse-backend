@@ -24,18 +24,21 @@ export class DalleController {
   generateImage =
     asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       let bodyData: DallePayloadDTO = req.body
-      // const adminMetaData: AdminMetaDataDTO = tokenDataParser.getUserTokenMetaData(req.user)
-      let result = await this.DalleService.add(bodyData)
+      // let { _id: userId } = req.user
+      const adminMetaData: AdminMetaDataDTO = tokenDataParser.getUserTokenMetaData(req.user)
+
+      let result = await this.DalleService.add(bodyData, adminMetaData)
       new SuccessResponse('image generated successfully', result).send(res);
     })
 
-  getAll =
+  getAllforUser =
     asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       const paginationData: PaginationDataDTO = paginationParser.getpaginationData(req.query)
       let { _id: userId } = req.user
-      let result = await this.DalleService.getAll(userId, paginationData)
-      new SuccessResponse('found industry successfully', result).send(res);
+      let result = await this.DalleService.getAllforUser(userId, paginationData)
+      new SuccessResponse('found NFT successfully', result).send(res);
     })
+
   getAllforAdmin =
     asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       const paginationData: PaginationDataDTO = paginationParser.getpaginationData(req.query)
