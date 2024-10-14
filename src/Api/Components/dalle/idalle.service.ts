@@ -8,8 +8,8 @@ import { DallePayloadDTO } from "../../../Interface/payloadInterface";
 
 export interface IDalleService {
 
-  add(bodyData: DallePayloadDTO): Promise<Industry>
-  getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>
+  add(bodyData: DallePayloadDTO, userId: SuperAdminMetaDataDTO): Promise<any>
+  getAllforUser(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>
   getAllforAdmin(paginationData: PaginationDataDTO): Promise<any>
   get(id: string): Promise<Industry | null>
   update(bodyData: UpdateIndustryPayloadDTO, metaData: SuperAdminMetaDataDTO, industryId: string): Promise<Industry | null>

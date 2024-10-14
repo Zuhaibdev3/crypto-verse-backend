@@ -19,22 +19,22 @@ export class DalleRoutes {
 
     this.router.post(
       '/',
-      // authentication,
+      authentication,
       validator(DalleValidationSchema),
       this.controller.generateImage
     )
     
     // this.router.get(
-    //   '/admin',
+    //   '/',
     //   authentication,
     //   this.controller.getAllforAdmin
     // )
 
-    // this.router.get(
-    //   '/',
-    //   authentication,
-    //   this.controller.getAll
-    // )
+    this.router.get(
+      '/',
+      authentication,
+      this.controller.getAllforUser
+    )
 
     // this.router.get(
     //   '/:industryId',

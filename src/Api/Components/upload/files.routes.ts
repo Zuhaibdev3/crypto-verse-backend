@@ -18,6 +18,12 @@ export class FileRoutes {
             authentication,
             this.controller.uploadOnCloudinary
         )
+        this.router.delete(
+            '/image',
+            // authentication,
+            this.controller.deletefromCloudinary
+        )
     }
+    
 
 }

@@ -100,7 +100,7 @@ const schema = new Schema<IUser>(
     roleId: {
       type: Schema.Types.ObjectId,
       ref: RolesDocumentName,
-      required: true,
+      // required: true,
     },
     createdBy: {
       type: Schema.Types.ObjectId,

@@ -11,12 +11,21 @@ export class FileController {
   getFilesService(): IFilesService {
     return resolve<IFilesService>(SERVICE_IDENTIFIER.FilesService);
   }
+
   filesService = this.getFilesService();
+
   uploadOnCloudinary = asyncHandler(
     async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       let { _id: userId } = req.user
-      const file = await this.filesService.upload(req, res, userId); // Handing off the file to the service
-      return new SuccessResponse('Image uploaded successfully', file).send(res);
+      const UploadedImage = await this.filesService.upload(req, res, userId);
+      return new SuccessResponse('Image uploaded successfully', { imageUrl: UploadedImage }).send(res);
+    }
+  );
+  deletefromCloudinary = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+      let { imageUrl } = req.body
+      const UploadedImage = await this.filesService.delete(imageUrl);
+      return new SuccessResponse('Image uploaded successfully', { imageUrl: UploadedImage }).send(res);
     }
   );
 

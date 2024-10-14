@@ -9,6 +9,7 @@ import IFilesRepository from "./ifiles.repository";
 import { MulterService } from '../multer/multer.service';
 import { v2 as cloudinary } from "cloudinary";
 import Files from './files.entity';
+import axios from 'axios';
 
 @injectable()
 
@@ -29,25 +30,37 @@ export class FilesService implements IFilesService {
     });
   }
 
-  async upload(req: Request, res: Response, userId: DatabaseId): Promise<Files> {
+  async upload(req: Request, res: Response, userId: DatabaseId): Promise<string> {
     try {
       const MulterFileData = await this.multerService.uploadSingle(req, res, 'image');
       const options = {
-        folder: 'uploads/images',
+        folder: 'cryptoverse/images',
         use_filename: true,
         unique_filename: false,
         overwrite: true
       };
-      const cloudinaryResponse = await this.cloudinary.uploader.upload(MulterFileData.path,options);
-      const FileData = DataCopier.copy(Files, {
-        userId: userId,
-        name: cloudinaryResponse?.original_filename,
-        path: cloudinaryResponse?.secure_url,
-        fileName: cloudinaryResponse?.display_name,
-        fileSize: cloudinaryResponse?.bytes?.toString(),
-        fileType: cloudinaryResponse?.format,
-      })
-      return await this.FilesRepository.create(FileData)
+      const cloudinaryResponse = await this.cloudinary.uploader.upload(MulterFileData.path, options);
+      return cloudinaryResponse?.secure_url
+    } catch (error: any) {
+      throw new BadRequestError(error.message || "Image Upload Field");
+    }
+  }
+
+  async uploadCheck(imageUrl: string): Promise<any> {
+    try {
+      const imageResponse = await axios({
+        url: imageUrl,
+        method: 'GET',
+        responseType: 'stream'
+      });
+
+      return await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream((error, result) => {
+          if (error) return reject(error);
+          resolve(result?.secure_url || "");
+        });
+        imageResponse.data.pipe(stream);
+      });
     } catch (error: any) {
       throw new BadRequestError(error.message || "Image Upload Field");
     }
@@ -55,4 +68,14 @@ export class FilesService implements IFilesService {
 
 
 
+  async delete(imageUrl: string): Promise<string> {
+    try {
+      const extractedPath = imageUrl.substring(imageUrl.indexOf('/cryptoverse/') + 1)?.split(".")[0];
+      const cloudinaryResponse = await this.cloudinary.uploader.destroy(extractedPath);
+      console.log(cloudinaryResponse, "cloudinaryResponses")
+      return "Deleted"
+    } catch (error: any) {
+      throw new BadRequestError(error.message || "Image Upload Field");
+    }
+  }
 }

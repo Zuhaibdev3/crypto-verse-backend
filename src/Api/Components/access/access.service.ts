@@ -24,9 +24,7 @@ export class AccessService implements IAccessService {
   async generate(type: 'SIGNUP' | 'SIGNIN', user: User): Promise<{ tokens: Tokens, user: User }> {
     const accessTokenKey = generateTokenKey();
     const refreshTokenKey = generateTokenKey();
-    console.log(user, "user")
     const userData = DataCopier.copy(User, user)
-    console.log(userData, "userData")
     if (type === 'SIGNUP') {
       const { user: createdUser } = await this.userRepository.create(
         userData,
@@ -37,7 +35,6 @@ export class AccessService implements IAccessService {
       );
       user = createdUser
     }
-    console.log(user, "useruseruseruseruseruser")
     //@ts-ignore
     const keystore = await KeystoreRepo.create(user._id, accessTokenKey, refreshTokenKey);
     const tokens = await createTokens(user, { ip: "0.0.0.0" }, keystore.primaryKey, keystore.secondaryKey);

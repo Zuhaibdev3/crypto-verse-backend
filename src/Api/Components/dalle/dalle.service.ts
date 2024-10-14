@@ -11,6 +11,9 @@ import { DatabaseId } from "../../../../types";
 import { SuperAdminMetaDataDTO } from "../../../dto/index.dto";
 import { PaginationDataDTO } from "../../../dto/common.dto";
 import { OpenAI } from 'openai';  // Updated import
+import axios from "axios";
+import { FilesService } from "../upload/files.service";
+import Dalle from "./dalle.entity";
 
 @injectable()
 export class DalleService implements IDalleService {
@@ -20,25 +23,42 @@ export class DalleService implements IDalleService {
   constructor(
     @inject(SERVICE_IDENTIFIER.DalleRepository)
     private DalleRepository: IDalleRepository,
+    @inject(SERVICE_IDENTIFIER.FilesService)
+    private FilesService: FilesService
   ) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_AUTHKEY,
     });
   }
 
-  async add(bodyData: DallePayloadDTO): Promise<Industry> {
+  async add(bodyData: DallePayloadDTO, metaData: SuperAdminMetaDataDTO): Promise<any> {
     try {
-      return await this.openai.images.generate({ prompt: bodyData?.prompt, n: 1, quality: "hd", model: "dall-e-3", style: "natural", size: '1024x1024', });
+      const dalleResponse = await this.openai.images.generate({ prompt: bodyData?.prompt, n: 1, quality: "hd", model: "dall-e-3", style: "natural", size: '1024x1024', });
+      const dalleImageUrl = dalleResponse.data[0];
+      if (!dalleImageUrl?.url) {
+        throw new BadRequestError('Failed to generate image');
+      }
+      const uploadedUrl = await this.FilesService.uploadCheck(dalleImageUrl.url);
+
+      const obj = {
+        nft: [{ url: uploadedUrl, description: dalleImageUrl?.revised_prompt || "", }],
+      };
+
+      const imageData = DataCopier.assignToTarget(bodyData, metaData);
+      const finalImageData = DataCopier.copy(Dalle, { ...obj, ...imageData });
+
+      const result = await this.DalleRepository.create(finalImageData);
+      return result;
     } catch (error) {
       throw new BadRequestError('Failed to generate image')
     }
   }
 
-  async getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any> {
+  async getAllforUser(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any> {
     try {
       return this.DalleRepository.findAllWithPagination({ $or: [{ userId: userId }, { userId: null }] }, paginationData.page, paginationData.limit)
     } catch (error) {
-      throw new BadRequestError('No industry found')
+      throw new BadRequestError('No NFT found')
     }
   }
 
@@ -46,7 +66,7 @@ export class DalleService implements IDalleService {
     try {
       return this.DalleRepository.findAllWithPagination({}, paginationData.page, paginationData.limit)
     } catch (error) {
-      throw new BadRequestError('No industry found')
+      throw new BadRequestError('No NFT found')
     }
   }
 

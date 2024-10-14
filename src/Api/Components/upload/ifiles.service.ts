@@ -3,6 +3,7 @@ import Files from './files.entity';
 import { Request, Response } from 'express';
 
 export interface IFilesService {
-    upload(req: Request, res: Response, userId: DatabaseId): Promise<Files>
-
+    upload(req: Request, res: Response, userId: DatabaseId): Promise<string>
+    delete(imageUrl: string): Promise<any>
+    uploadCheck(imageUrl: string): Promise<any>
 }
