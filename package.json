@@ -15,6 +15,7 @@
     "start:dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only --exit-child --watch src ./src/app.ts",
     "start:prod": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only --exit-child --watch src ./src/app.ts",
     "production": "node dist/src/app.js",
+    "production:pm2": "pm2 start --name cryptoverse-backend dist/src/app.js",
     "seed:roles": "ts-node-dev src/seed/index.ts",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
