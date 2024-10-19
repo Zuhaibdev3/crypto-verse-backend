@@ -1,13 +1,13 @@
 import Joi from "joi";
 
-import { GeoJSONObjectTypes } from '../enums/enums';
+// import { GeoJSONObjectTypes } from '../enums/enums';
 
 import { JoiStringifiedObjectId } from './validator';
 
 export const JoiLocation = () => {
 
   return Joi.object({
-    type: Joi.string().valid(GeoJSONObjectTypes.point).allow(null).required(),
+    // type: Joi.string().valid(GeoJSONObjectTypes.point).allow(null).required(),
     coordinates: Joi.array().ordered(
       // Joi.number().min(-180).max(180).allow(null).required(),
       // Joi.number().min(-90).max(90).allow(null).required()
