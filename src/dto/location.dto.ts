@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { GeoJSONObjectTypes } from "../enums/enums";
+// import { GeoJSONObjectTypes } from "../enums/enums";
 
 export const LocationSchema = {
 
@@ -7,13 +7,13 @@ export const LocationSchema = {
     type: Schema.Types.String,
      enum: {
       values: [
-        GeoJSONObjectTypes.geometryCollection,
-        GeoJSONObjectTypes.lineString,
-        GeoJSONObjectTypes.multiLineString,
-        GeoJSONObjectTypes.multiPoint,
-        GeoJSONObjectTypes.multiPolygon,
-        GeoJSONObjectTypes.point,
-        GeoJSONObjectTypes.polygon
+        // GeoJSONObjectTypes.geometryCollection,
+        // GeoJSONObjectTypes.lineString,
+        // GeoJSONObjectTypes.multiLineString,
+        // GeoJSONObjectTypes.multiPoint,
+        // GeoJSONObjectTypes.multiPolygon,
+        // GeoJSONObjectTypes.point,
+        // GeoJSONObjectTypes.polygon
       ]
     }
   },
@@ -33,7 +33,7 @@ export const LocationSchema = {
 
 
 export class LocationDTO {
-  type: GeoJSONObjectTypes | null = GeoJSONObjectTypes.point;
+  // type: GeoJSONObjectTypes | null = GeoJSONObjectTypes.point;
   coordinates: [Number | null, Number | null] = [null, null];
   formattedAddress: String | null = '';
   street: String | null = '';
@@ -44,7 +44,7 @@ export class LocationDTO {
 }
 
 export interface ILocation {
-  type: GeoJSONObjectTypes | null;
+  // type: GeoJSONObjectTypes | null;
   coordinates: [Number | null, Number | null];
   formattedAddress: String | null;
   street: String | null;
