@@ -29,6 +29,10 @@ import FilesRepository from "./Api/Components/upload/files.repository";
 import { MulterService } from './Api/Components/multer/multer.service';
 
 
+import { IStabilityaiService } from "./Api/Components/stabilityai/istabilityai.service";
+import { StabilityaiService } from "./Api/Components/stabilityai/stabilityai.service";
+import IStabilityaiRepository from "./Api/Components/stabilityai/istabilityai.repository";
+import StabilityaiRepository from "./Api/Components/stabilityai/stabilityai.repository";
 
 let container = new Container();
 container
@@ -66,13 +70,21 @@ container
   .to(DalleRepository);
 
 container
+  .bind<IStabilityaiService>(SERVICE_IDENTIFIER.StabilityaiService)
+  .to(StabilityaiService);
+
+container
+  .bind<IStabilityaiRepository>(SERVICE_IDENTIFIER.StabilityaiRepository)
+  .to(StabilityaiRepository);
+
+container
   .bind<MulterService>(SERVICE_IDENTIFIER.MulterService)
   .to(MulterService);
 
 container
   .bind<IFilesService>(SERVICE_IDENTIFIER.FilesService)
   .to(FilesService);
-  
+
 container
   .bind<IFilesRepository>(SERVICE_IDENTIFIER.FilesRepository)
   .to(FilesRepository);

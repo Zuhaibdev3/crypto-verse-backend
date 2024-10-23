@@ -45,7 +45,20 @@ export class FilesService implements IFilesService {
       throw new BadRequestError(error.message || "Image Upload Field");
     }
   }
-
+  async SingleUpload(url: string): Promise<string> {
+    try {
+      const options = {
+        folder: 'cryptoverse/imagetoimage',
+        use_filename: true,
+        unique_filename: false,
+        overwrite: true
+      };
+      const cloudinaryResponse = await this.cloudinary.uploader.upload(url, options);
+      return cloudinaryResponse?.secure_url
+    } catch (error: any) {
+      throw new BadRequestError(error.message || "Image Upload Field");
+    }
+  }
   async uploadCheck(imageUrl: string): Promise<any> {
     try {
       const imageResponse = await axios({
