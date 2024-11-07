@@ -11,6 +11,10 @@ import { resolve } from '../../../dependencymanagement';
 import IUserRepo from '../../../database/repository/iuser.repository';
 import { User } from "../user/user.entity";
 import { WalletPayloadDTO, UpdateWalletDetailPayloadDTO } from "../../../Interface/payloadInterface";
+import { BadRequestError } from "../../../core/ApiError";
+import { comparePassword } from "../../../utils/password";
+import bcrypt from "bcrypt";
+import { sendOtpEmail } from "../../../utils/emailService";
 
 export class AccessController {
 
@@ -25,6 +29,7 @@ export class AccessController {
   accessService = this.getAccessService();
   UserRepo = this.getUserRepository();
 
+  //user login 
   connectedToWallet = asyncHandler(
     async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       const bodyData: WalletPayloadDTO = req.body
@@ -44,6 +49,47 @@ export class AccessController {
           tokens,
         }).send(res);
       }
+    }
+  )
+
+  //super admin login
+  signin = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+
+      const user = await this.UserRepo.findByEmail(req.body.email);
+
+      if (!user) throw new BadRequestError('Invalid credentials');
+
+      if (!user.password || !user.email) throw new BadRequestError('Credential not sent');
+
+      await comparePassword(req.body.password, user.password)
+
+      const { tokens } = await this.accessService.generate('SIGNIN', user as User)
+
+      Logger.info("Login Success", { user: user })
+
+      new SuccessResponse('Login Success', {
+        user: user,
+        tokens: tokens,
+      }).send(res);
+
+    }
+  )
+
+
+  signup = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+
+      const user = await this.UserRepo.findByEmail(req.body.email);
+      if (user) throw new BadRequestError('User already registered');
+
+      const { tokens, user: createdUser } = await this.accessService.generate('SIGNUP', req.body as User)
+
+      Logger.info("Login Success", { user: createdUser })
+      new SuccessResponse('Signup Successful', {
+        user: createdUser,
+        tokens,
+      }).send(res);
     }
   )
 
@@ -73,7 +119,70 @@ export class AccessController {
       new SuccessMsgResponse('Wallet Disconnect Successfully').send(res);
     }
   )
+  //forgot password endpoints starts here
 
+  forgotPassword = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+
+      const user = await this.UserRepo.findByEmail(req.body.email);
+
+      if (!user) throw new BadRequestError('User does not exist!');
+
+      let otp = Math.floor(10000 + Math.random() * 90000); // Generates a random 5-digit number
+      let otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes in milliseconds
+
+      await this.UserRepo.updateOtp(user._id, otp, otpExpiry);
+
+      // Send OTP email
+      if (user.email) await sendOtpEmail(user.email, otp);
+
+      new SuccessMsgResponse(`We have share a code to your registered Email \n ${user.email}`).send(res);
+    }
+  )
+
+  verifyOtp = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+
+      const { email, otp } = req.body;
+
+      const user = await this.UserRepo.findByEmail(email);
+
+      if (!user) throw new BadRequestError('User does not exist!');
+
+      // Check if the OTP matches
+      if (user.otp !== otp) {
+        return res.status(400).json({ success: false, message: 'Invalid OTP' });
+      }
+
+      // Check if the OTP has expired
+      if (user.otpExpiry && user.otpExpiry < new Date()) {
+        return res.status(400).json({ success: false, message: 'OTP has expired' });
+      }
+
+      new SuccessMsgResponse(`OTP verified successfully`).send(res);
+    }
+  )
+
+  resetPassword = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+
+      const { email, newPassword } = req.body;
+
+      const user = await this.UserRepo.findByEmail(email);
+
+      if (!user) throw new BadRequestError('User does not exist!');
+
+      if (user.password) {
+        const hashedPassword = await bcrypt.hashSync(newPassword, 10);
+        await this.UserRepo.updatePassword(user._id, hashedPassword);
+      }
+
+      new SuccessMsgResponse(`Password reset successfully`).send(res);
+
+    }
+  )
+
+  //forgot password endpoints ends here
 
   // verify = asyncHandler(
   //   async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {

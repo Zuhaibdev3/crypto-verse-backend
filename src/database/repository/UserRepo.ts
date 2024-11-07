@@ -1,6 +1,6 @@
 import Role, { RoleModel } from '../model/Role';
 import { InternalError } from '../../core/ApiError';
-import mongoose, { ObjectId, Types } from 'mongoose';
+import mongoose, { ObjectId, Schema, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import KeystoreRepo from './KeystoreRepo';
 import Keystore from '../model/Keystore';
@@ -59,7 +59,7 @@ export default class UserRepo
     let a: any = await UserModel.findOne({ _id: id, })
       .select(selectString)
       .populate({
-        path: 'role roleId',
+        path: 'role',
         // select: "-status"
       })
       .lean<User>()
@@ -68,11 +68,19 @@ export default class UserRepo
     return a
   }
 
+  async updatePassword(userId: Schema.Types.ObjectId, newPassword: string) {
+    return await UserModel.findByIdAndUpdate(
+      userId,
+      { password: newPassword, otp: null, otpExpiry: null }, // Reset OTP fields and verified status
+      { new: true }
+    );
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     let a: any = await UserModel.findOne({ email: email, })
       .select('+email +password +role')
       .populate({
-        path: 'role roleId',
+        path: 'role',
       })
       .lean<User>()
       .exec();
@@ -84,7 +92,7 @@ export default class UserRepo
     let a: any = await UserModel.findOne({ walletAddress: walletAddress, })
       .select('+walletAddress')
       .populate({
-        path: 'role roleId',
+        path: 'role',
         // select: "-status"
       })
       .lean<User>()
@@ -164,6 +172,8 @@ export default class UserRepo
     user.role = role._id;
     user.createdAt = user.updatedAt = now;
     console.log("Trigger hua 1 ")
+
+    if (user.password) user.password = bcrypt.hashSync(user.password, 10);
 
     const createdUser = await UserModel.create(user);
     console.log("Trigger hua 0 ")
@@ -246,6 +256,15 @@ export default class UserRepo
       .exec()
     // @ts-ignore
     return user_updated;
+  }
+
+  // Update OTP and expiry for a user
+  async updateOtp(userId: Schema.Types.ObjectId, otp: number, otpExpiry: Date) {
+    return await UserModel.findByIdAndUpdate(
+      userId,
+      { otp, otpExpiry },
+      { new: true } // This option returns the updated document
+    );
   }
 
   async findByNameAndBusinessId(userName: string, businessId: DatabaseId, page: number, limit: number): Promise<User[] | null> {

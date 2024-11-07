@@ -16,7 +16,7 @@ export default interface IUserRepository extends IRepository<User> {
   deleteManyWithBusinessId(businessId: string): Promise<any>
   findById(id: string): Promise<any>
   backupMany(userIds: string[]): Promise<any>
-  findAllUserAggregate(query: any, pagination: any, userId:DatabaseId): any
+  findAllUserAggregate(query: any, pagination: any, userId: DatabaseId): any
   findAllUserUsingRoleAggregate(query: any, pagination: any): any
   getCountUsingRole(query: any): any
   getBusinessScoreCard(businessId: Schema.Types.ObjectId): Promise<any[]>
@@ -24,7 +24,7 @@ export default interface IUserRepository extends IRepository<User> {
   updateUserScoreCard(businessId: DatabaseId): Promise<any>
 
   getScorecardStats(businessId: DatabaseId, query: { category: string, culture_group: string }): Promise<any>
-   
+
   getAllBusinessUsersForChat(businessId: DatabaseId, page: number, limit: number): Promise<any>
   deleteAllUsersExceptAdmin(businessId: DatabaseId, userId: DatabaseId): Promise<any>
 

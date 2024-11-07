@@ -20,13 +20,13 @@ export class User implements IUser {
   discordUserName: string = '';
   instagramUserName: string = '';
   email: string | null = null;
+  password: string | null = null;
+  otp: number | null = null;
+  otpExpiry: Date | null = null;
   profilePicUrl: string = '';
   role: Role;
-  roleId: Schema.Types.ObjectId | null = new ObjectId('');
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
-  type: USER_TYPE.SUPER_ADMIN | USER_TYPE.USER = USER_TYPE.USER
-  createdBy: Schema.Types.ObjectId | undefined = new ObjectId('');
   isDeleted: boolean = false
 }
 
@@ -40,13 +40,13 @@ export default interface IUser {
   discordUserName?: string
   instagramUserName?: string
   email: string | null;
+  password: string | null;
+  otp: number | null;
+  otpExpiry: Date | null;
   profilePicUrl: string;
   role: Role;
-  roleId: Schema.Types.ObjectId | null;
   createdAt: Date;
   updatedAt: Date;
-  type: USER_TYPE.SUPER_ADMIN | USER_TYPE.USER
-  createdBy: Schema.Types.ObjectId | undefined,
   isDeleted: boolean
 }
 
@@ -55,7 +55,7 @@ const schema = new Schema<IUser>(
   {
     walletAddress: {
       type: Schema.Types.String,
-      required: true,
+      required: false,
       unique: true
     },
     fullName: {
@@ -87,6 +87,19 @@ const schema = new Schema<IUser>(
       required: false,
       unique: true
     },
+    password: {
+      type: Schema.Types.String,
+      required: false,
+      select: false,
+    },
+    otp: {
+      type: Number,
+      required: false,
+    },
+    otpExpiry: {
+      type: Date,
+      required: false,
+    },
     profilePicUrl: {
       type: Schema.Types.String,
       required: false,
@@ -97,19 +110,7 @@ const schema = new Schema<IUser>(
       ref: RolesDocumentName,
       required: true,
     },
-    roleId: {
-      type: Schema.Types.ObjectId,
-      ref: RolesDocumentName,
-      // required: true,
-    },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      required: false
-    },
-    type: {
-      type: Schema.Types.String,
-      required: true,
-    },
+
     createdAt: {
       type: Date,
       required: false,

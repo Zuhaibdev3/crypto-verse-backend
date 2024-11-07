@@ -3,6 +3,26 @@
  * Do not modify this file manually
  */
 
+export interface ForgotPasswordPayloadDTO {
+  email: string;
+}
+
+export interface ResetPasswordPayloadDTO {
+  email: string;
+  newPassword: string;
+}
+
+export interface SigninPayloadDTO {
+  email: string;
+  password: string;
+}
+
+export interface SignupPayloadDTO {
+  email: string;
+  password: string;
+  role: string;
+}
+
 export interface UpdateWalletDetailPayloadDTO {
   bio?: string;
   discordUserName?: string;
@@ -12,6 +32,11 @@ export interface UpdateWalletDetailPayloadDTO {
   profilePicUrl?: string;
   twitterUserName?: string;
   websiteLink?: string;
+}
+
+export interface VerifyOtpPayloadDTO {
+  email: string;
+  otp: number;
 }
 
 export interface WalletPayloadDTO {

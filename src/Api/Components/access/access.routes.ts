@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { AccessController } from './access.controller';
 import validator from '../../../validations/validator';
 import authentication from '../../../middleware/authentication';
-import { UpdateWalletDetailValidationSchema, WalletValidationSchema } from '../../../validations/payloadSchema/AccessSchema';
+import { ForgotPasswordValidationSchema, ResetPasswordValidationSchema, SigninValidationSchema, SignupValidationSchema, UpdateWalletDetailValidationSchema, VerifyOtpValidationSchema, WalletValidationSchema } from '../../../validations/payloadSchema/AccessSchema';
 
 export class AccessRoutes {
 
@@ -21,10 +21,40 @@ export class AccessRoutes {
       this.controller.connectedToWallet
     )
 
+    this.router.post(
+      '/signin',
+      validator(SigninValidationSchema),
+      this.controller.signin
+    )
+
+    this.router.post(
+      '/signup',
+      validator(SignupValidationSchema),
+      this.controller.signup
+    )
+
     this.router.delete(
       '/signout',
       authentication,
       this.controller.signout
+    )
+
+    this.router.post(
+      '/forgot-password',
+      validator(ForgotPasswordValidationSchema),
+      this.controller.forgotPassword
+    )
+
+    this.router.post(
+      '/verify-otp',
+      validator(VerifyOtpValidationSchema),
+      this.controller.verifyOtp
+    )
+
+    this.router.post(
+      '/reset-password',
+      validator(ResetPasswordValidationSchema),
+      this.controller.resetPassword
     )
 
     this.router.post(
@@ -40,7 +70,7 @@ export class AccessRoutes {
       this.controller.updateProfle
     )
 
-    
+
     //   this.router.post(
     //     '/refresh',
     //     authentication,
