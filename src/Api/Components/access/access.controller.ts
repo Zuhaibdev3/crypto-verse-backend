@@ -136,7 +136,7 @@ export class AccessController {
       // Send OTP email
       if (user.email) await sendOtpEmail(user.email, otp);
 
-      new SuccessMsgResponse(`We have share a code to your registered Email \n ${user.email}`).send(res);
+      new SuccessMsgResponse(`${user.email}`).send(res);
     }
   )
 
@@ -148,9 +148,9 @@ export class AccessController {
       const user = await this.UserRepo.findByEmail(email);
 
       if (!user) throw new BadRequestError('User does not exist!');
-
+      
       // Check if the OTP matches
-      if (user.otp !== otp) {
+      if (user.otp !== Number(otp)) {
         return res.status(400).json({ success: false, message: 'Invalid OTP' });
       }
 
