@@ -16,6 +16,8 @@ export class User implements IUser {
   fullName: string = '';
   bio: string = '';
   websiteLink: string = '';
+  address: string = '';
+  phone: string = '';
   twitterUserName: string = '';
   discordUserName: string = '';
   instagramUserName: string = '';
@@ -36,6 +38,8 @@ export default interface IUser {
   fullName: string
   bio: string
   websiteLink?: string
+  address?: string
+  phone?: string
   twitterUserName?: string
   discordUserName?: string
   instagramUserName?: string
@@ -67,6 +71,14 @@ const schema = new Schema<IUser>(
       required: false,
     },
     websiteLink: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    address: {
+      type: Schema.Types.String,
+      required: false,
+    },
+    phone: {
       type: Schema.Types.String,
       required: false,
     },

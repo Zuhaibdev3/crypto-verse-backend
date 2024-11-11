@@ -70,6 +70,13 @@ export class AccessRoutes {
       this.controller.updateProfle
     )
 
+    this.router.get(
+      '/users',
+      authentication,
+      this.controller.getUsers
+    )
+
+
 
     //   this.router.post(
     //     '/refresh',
@@ -83,11 +90,6 @@ export class AccessRoutes {
     //     this.controller.getUser
     //   )
 
-    //   this.router.get(
-    //     '/users',
-    //     authentication,
-    //     this.controller.getUsers
-    //   )
 
 
 

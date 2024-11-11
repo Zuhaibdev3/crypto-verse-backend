@@ -15,6 +15,7 @@ export const registerApiRoutes = (router: Router, prefix = '', superAdminPrefix 
   router.use(`${userPrefix}/dalle`, new DalleRoutes().router)
   
   router.use(`${superAdminPrefix}`, new AccessRoutes().router)
+  router.use(`${superAdminPrefix}/upload`, new FileRoutes().router)
 
   router.use((req: Request, res: Response, next: NextFunction) => next(new NotFoundError()));
 }

@@ -10,7 +10,7 @@ import { Schema } from "mongoose";
 export default interface IUserRepo {
   create(arg0: any, accessTokenKey: any, refreshTokenKey: any, role: any): Promise<any>;
   findUsers(): Promise<User[]>
-  find(role: Role, query: any): Promise<User[]>
+  find(query: any): Promise<User[]>
   findById(id: Types.ObjectId): Promise<User | null>
   findByEmail(email: string): Promise<User | null>
   updatePassword(userId: Schema.Types.ObjectId, newPassword: string): Promise<any>

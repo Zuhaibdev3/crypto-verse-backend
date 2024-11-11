@@ -40,9 +40,9 @@ export default class UserRepo
     return a
   }
   // contains critical information of the user
-  async find(role: Role, query: any): Promise<User[]> {
-    const a = await UserModel.find({ role: { $ne: role._id }, ...query })
-      .select('+email +role') // -verified -status
+  async find(query: any): Promise<User[]> {
+    const a = await UserModel.find({ ...query })
+      .select('+email +role +updatedAt') // -verified -status
       .populate({
         path: 'role',
         select: "-status"

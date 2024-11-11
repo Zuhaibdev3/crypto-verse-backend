@@ -108,6 +108,7 @@ export class AccessController {
     async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       let bodyData: UpdateWalletDetailPayloadDTO = req.body
       let { _id } = req.user
+      console.log(_id, bodyData, "aaaaaaaaaaaaaaaa")
       let result = await this.UserRepo.updateInfo(_id, bodyData)
       new SuccessResponse('Profile Updated successfully', result).send(res);
     }
@@ -148,7 +149,7 @@ export class AccessController {
       const user = await this.UserRepo.findByEmail(email);
 
       if (!user) throw new BadRequestError('User does not exist!');
-      
+
       // Check if the OTP matches
       if (user.otp !== Number(otp)) {
         return res.status(400).json({ success: false, message: 'Invalid OTP' });
@@ -179,6 +180,15 @@ export class AccessController {
 
       new SuccessMsgResponse(`Password reset successfully`).send(res);
 
+    }
+  )
+
+  getUsers = asyncHandler(
+    async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+      const users = await this.UserRepo.find({ _id: { $ne: req.user._id } });
+      new SuccessResponse('fetch success', {
+        data: users
+      }).send(res);
     }
   )
 
@@ -242,21 +252,7 @@ export class AccessController {
   //   }
   // )
 
-  // getUsers = asyncHandler(
-  //   async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
 
-  //     let query = {}
-
-  //     if (req.user.role.code !== 'SUPER_ADMIN') {
-  //       query = { business: req.user.business._id }
-  //     }
-
-  //     const users = await this.UserRepo.find(req.user.role, query);
-  //     new SuccessResponse('fetch success', {
-  //       users
-  //     }).send(res);
-  //   }
-  // )
 
   // deleteUser = asyncHandler(
   //   async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
