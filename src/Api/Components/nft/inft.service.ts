@@ -12,7 +12,7 @@ export interface INftService {
   addMultiple(taskbodyData: any[], userData: MetaDTO): Promise<any>
 
   // add(bodyData: NftPayloadDTO, superAdminMetaData: SuperAdminMetaDataDTO): Promise<Nft>
-  getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any>
+  getAll(walletAddress: string, paginationData: PaginationDataDTO): Promise<any>
   // getAllforAdmin(paginationData: PaginationDataDTO): Promise<any>
   // get(id: string): Promise<Industry | null>
   // update(bodyData: UpdateIndustryPayloadDTO, metaData: SuperAdminMetaDataDTO, industryId: string): Promise<Industry | null>

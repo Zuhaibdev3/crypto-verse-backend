@@ -46,9 +46,9 @@ export class NftService implements INftService {
     }
     return result
   }
-  async getAll(userId: DatabaseId, paginationData: PaginationDataDTO): Promise<any> {
+  async getAll(walletAddress: string, paginationData: PaginationDataDTO): Promise<any> {
     try {
-      return this.NftRepository.findAllWithPagination({ $or: [{ userId: userId }, { userId: null }] }, paginationData.page, paginationData.limit)
+      return this.NftRepository.findAllWithPagination({ walletAddress }, paginationData.page, paginationData.limit)
     } catch (error) {
       throw new BadRequestError('No industry found')
     }

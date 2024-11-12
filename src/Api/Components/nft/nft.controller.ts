@@ -35,9 +35,9 @@ export class NftController {
 
   getAll = asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
     const paginationData: PaginationDataDTO = paginationParser.getpaginationData(req.query)
-    let { _id: userId } = req.user
-    let result = await this.NftService.getAll(userId, paginationData)
-    new SuccessResponse('found industry successfully', result).send(res);
+    let { walletAddress } = req.user
+    let result = await this.NftService.getAll(walletAddress, paginationData)
+    new SuccessResponse('found nfts successfully', result).send(res);
   })
   // getAllforAdmin =
   //   asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
