@@ -19,4 +19,5 @@ yarn.lock
 package-lock.json
 
 # Environment varibles
+*.env.*
 .vercel
