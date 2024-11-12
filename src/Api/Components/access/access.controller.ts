@@ -36,7 +36,7 @@ export class AccessController {
       const user = await this.UserRepo.findByWalletAddress(bodyData?.walletAddress);
       if (user) {
         const { tokens } = await this.accessService.generate('SIGNIN', user as User)
-        new SuccessResponse('Connected To Wallet', {
+        new SuccessResponse('Wallet Connected', {
           user: user,
           tokens: tokens,
         }).send(res);
@@ -44,7 +44,7 @@ export class AccessController {
       else {
         const { tokens, user: createdUser } = await this.accessService.generate('SIGNUP', bodyData as WalletPayloadDTO)
         Logger.info("Login Success", { user: _.pick(createdUser, ['_id', 'name', 'role',]) })
-        new SuccessResponse('Connected To Wallet', {
+        new SuccessResponse('Wallet Connected', {
           user: _.pick(createdUser, ['_id', "walletAddress", "fullName", "role", "profilePicUrl"]),
           tokens,
         }).send(res);
@@ -117,7 +117,7 @@ export class AccessController {
   signout = asyncHandler(
     async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       await KeystoreRepo.removeByClient(req.user?._id);
-      new SuccessMsgResponse('Wallet Disconnect Successfully').send(res);
+      new SuccessMsgResponse('Wallet Disconnected').send(res);
     }
   )
   //forgot password endpoints starts here

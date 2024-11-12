@@ -97,7 +97,6 @@ const schema = new Schema<IUser>(
     email: {
       type: Schema.Types.String,
       required: false,
-      unique: true
     },
     password: {
       type: Schema.Types.String,
