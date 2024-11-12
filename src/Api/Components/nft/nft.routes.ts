@@ -1,43 +1,46 @@
 import { Router } from 'express';
-import authentication from '../../../middleware/authentication';
-import { TextToImageValidationSchema } from '../../../validations/payloadSchema/StabilitySchema';
+import { NftController } from './nft.controller';
 import validator, { ValidationSource } from '../../../validations/validator';
+import authentication from '../../../middleware/authentication';
+import { IndustryIdParamSchema, IndustryValidationSchema, UpdateIndustryValidationSchema } from '../../../validations/payloadSchema/IndustrySchema';
+import authorization from '../../../middleware/authorization';
+import { RoleCode } from '../../../database/model/Role';
 
-import { StabilityaiController } from './istabilityai.controller';
-export class StabilityaiRoutes {
+export class NftRoutes {
 
   readonly router: Router = Router();
-  readonly controller: StabilityaiController = new StabilityaiController()
+  readonly controller: NftController = new NftController()
 
   constructor() {
     this.initRoutes();
   }
 
   initRoutes(): void {
-
-    this.router.post(
-      '/imagetoimage',
-      authentication,
-      // validator(DalleValidationSchema),
-      this.controller.ImageToImageGeneration
-    )
-    this.router.post(
-      '/texttoimage',
-      authentication,
-      validator(TextToImageValidationSchema),
-      this.controller.TextToImageGeneration
-    )
-    // this.router.get(
+    // this.router.post(
     //   '/',
+    //   authentication,
+    //   // validator(DalleValidationSchema),
+    //   this.controller.ImageToImageGeneration
+    // )
+
+    // this.router.post(
+    //   '/',
+    //   authentication,
+    //   validator(IndustryValidationSchema),
+    //   this.controller.add
+    // )
+
+    // this.router.get(
+    //   '/admin',
     //   authentication,
     //   this.controller.getAllforAdmin
     // )
 
-    // this.router.get(
-    //   '/',
-    //   authentication,
-    //   this.controller.getAllforUser
-    // )
+    this.router.get(
+      '/',
+      authentication,
+      this.controller.getAll
+    )
 
     // this.router.get(
     //   '/:industryId',

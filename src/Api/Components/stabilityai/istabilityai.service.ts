@@ -9,5 +9,6 @@ import { Request, Response } from 'express';
 
 export interface IStabilityaiService {
 
-  ImageToImageGeneration(req: Request, res: Response,): Promise<any>
+  ImageToImageGeneration(req: Request, res: Response, userId: DatabaseId, walletAddress: string): Promise<any>
+  TextToImageGeneration(Body: any, userId: DatabaseId, walletAddress: string): Promise<any>
 }

@@ -45,10 +45,10 @@ export class FilesService implements IFilesService {
       throw new BadRequestError(error.message || "Image Upload Field");
     }
   }
-  async SingleUpload(url: string): Promise<string> {
+  async SingleUpload(url: string, folder: string): Promise<string> {
     try {
       const options = {
-        folder: 'cryptoverse/imagetoimage',
+        folder: `cryptoverse${folder}`,
         use_filename: true,
         unique_filename: false,
         overwrite: true

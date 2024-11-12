@@ -17,6 +17,8 @@ const SERVICE_IDENTIFIER = {
   MulterService: Symbol.for('MulterService'),
   FilesService: Symbol.for("IFilesService"),
   FilesRepository: Symbol.for("IFilesRepository"),
+  NftService: Symbol.for("INftService"),
+  NftRepository: Symbol.for("INftRepository"),
 }
 
 export default SERVICE_IDENTIFIER;

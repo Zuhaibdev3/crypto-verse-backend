@@ -14,7 +14,6 @@ export interface IStabilityai {
 
 const schema = new Schema<IStabilityai>(
   {
- 
   },
   {
     strict: false,

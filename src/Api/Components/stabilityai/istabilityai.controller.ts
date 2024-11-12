@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { IStabilityaiService } from './istabilityai.service';
 import { resolve } from "../../../dependencymanagement"
 import SERVICE_IDENTIFIER from "../../../identifiers";
+import { IndustryIdParamDTO, TextToImagePayloadDTO, IndustryPayloadDTO, UpdateIndustryPayloadDTO } from "../../../Interface/payloadInterface";
 
 import { AdminMetaDataDTO } from "../../../dto/index.dto";
 import { tokenDataParser } from "../../../utils/tokenDataParser";
@@ -18,10 +19,17 @@ export class StabilityaiController {
   StabilityaiService = this.getStabilityaiService();
 
   ImageToImageGeneration = asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
-    const result = await this.StabilityaiService.ImageToImageGeneration(req, res);
+    let { _id: userId, walletAddress } = req.user
+    const result = await this.StabilityaiService.ImageToImageGeneration(req, res, userId, walletAddress);
     new SuccessResponse('image generated successfully', result).send(res);
   })
+  TextToImageGeneration = asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+    let { _id: userId, walletAddress } = req.user
+    let bodyData: TextToImagePayloadDTO = req.body
 
+    const result = await this.StabilityaiService.TextToImageGeneration(req.body, userId, walletAddress);
+    new SuccessResponse('image generated successfully', result).send(res);
+  })
   // generateImage =
   //   asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
   //     let bodyData: DallePayloadDTO = req.body

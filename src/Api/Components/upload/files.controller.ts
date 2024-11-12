@@ -21,6 +21,7 @@ export class FileController {
       return new SuccessResponse('Image uploaded successfully', { imageUrl: UploadedImage }).send(res);
     }
   );
+  
   deletefromCloudinary = asyncHandler(
     async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
       let { imageUrl } = req.body

@@ -34,6 +34,12 @@ import { StabilityaiService } from "./Api/Components/stabilityai/stabilityai.ser
 import IStabilityaiRepository from "./Api/Components/stabilityai/istabilityai.repository";
 import StabilityaiRepository from "./Api/Components/stabilityai/stabilityai.repository";
 
+
+import { INftService } from "./Api/Components/nft/inft.service";
+import { NftService } from "./Api/Components/nft/nft.service";
+import INftRepository from "./Api/Components/nft/inft.repository";
+import NftRepository from "./Api/Components/nft/nft.repository";
+
 let container = new Container();
 container
   .bind<IDataManipulationService>(SERVICE_IDENTIFIER.DataManipulationService)
@@ -88,6 +94,14 @@ container
 container
   .bind<IFilesRepository>(SERVICE_IDENTIFIER.FilesRepository)
   .to(FilesRepository);
+
+  container
+  .bind<INftService>(SERVICE_IDENTIFIER.NftService)
+  .to(NftService);
+
+container
+  .bind<INftRepository>(SERVICE_IDENTIFIER.NftRepository)
+  .to(NftRepository);
 
 
 
