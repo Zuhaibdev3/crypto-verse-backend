@@ -29,6 +29,16 @@ import FilesRepository from "./Api/Components/upload/files.repository";
 import { MulterService } from './Api/Components/multer/multer.service';
 
 
+import { IStabilityaiService } from "./Api/Components/stabilityai/istabilityai.service";
+import { StabilityaiService } from "./Api/Components/stabilityai/stabilityai.service";
+import IStabilityaiRepository from "./Api/Components/stabilityai/istabilityai.repository";
+import StabilityaiRepository from "./Api/Components/stabilityai/stabilityai.repository";
+
+
+import { INftService } from "./Api/Components/nft/inft.service";
+import { NftService } from "./Api/Components/nft/nft.service";
+import INftRepository from "./Api/Components/nft/inft.repository";
+import NftRepository from "./Api/Components/nft/nft.repository";
 
 let container = new Container();
 container
@@ -66,16 +76,32 @@ container
   .to(DalleRepository);
 
 container
+  .bind<IStabilityaiService>(SERVICE_IDENTIFIER.StabilityaiService)
+  .to(StabilityaiService);
+
+container
+  .bind<IStabilityaiRepository>(SERVICE_IDENTIFIER.StabilityaiRepository)
+  .to(StabilityaiRepository);
+
+container
   .bind<MulterService>(SERVICE_IDENTIFIER.MulterService)
   .to(MulterService);
 
 container
   .bind<IFilesService>(SERVICE_IDENTIFIER.FilesService)
   .to(FilesService);
-  
+
 container
   .bind<IFilesRepository>(SERVICE_IDENTIFIER.FilesRepository)
   .to(FilesRepository);
+
+  container
+  .bind<INftService>(SERVICE_IDENTIFIER.NftService)
+  .to(NftService);
+
+container
+  .bind<INftRepository>(SERVICE_IDENTIFIER.NftRepository)
+  .to(NftRepository);
 
 
 

@@ -12,9 +12,13 @@ const SERVICE_IDENTIFIER = {
   IndustryRepository: Symbol.for("IIndustryRepository"),
   DalleService: Symbol.for("IDalleService"),
   DalleRepository: Symbol.for("IDalleRepository"),
+  StabilityaiService: Symbol.for("IStabilityaiService"),
+  StabilityaiRepository: Symbol.for("IStabilityaiRepository"),
   MulterService: Symbol.for('MulterService'),
   FilesService: Symbol.for("IFilesService"),
   FilesRepository: Symbol.for("IFilesRepository"),
+  NftService: Symbol.for("INftService"),
+  NftRepository: Symbol.for("INftRepository"),
 }
 
 export default SERVICE_IDENTIFIER;

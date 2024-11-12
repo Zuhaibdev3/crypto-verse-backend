@@ -167,8 +167,6 @@ export default class UserRepo
       .lean<Role>()
       .exec();
     if (!role) throw new InternalError('Role must be defined in db!');
-    console.log("Trigger hua 2")
-
     user.role = role._id;
     user.createdAt = user.updatedAt = now;
     console.log("Trigger hua 1 ")
@@ -176,9 +174,6 @@ export default class UserRepo
     if (user.password) user.password = bcrypt.hashSync(user.password, 10);
 
     const createdUser = await UserModel.create(user);
-    console.log("Trigger hua 0 ")
-
-    console.log(createdUser, "createdUsercreatedUsercreatedUsercreatedUser")
     createdUser.populate({ path: 'role', select: "-status" })
     //@ts-ignore
     const keystore = await KeystoreRepo.create(createdUser._id, accessTokenKey, refreshTokenKey);
