@@ -13,8 +13,8 @@ export const registerApiRoutes = (router: Router, prefix = '', superAdminPrefix 
   router.get(prefix, (req: Request, res: Response) => res.send('❤'));
   router.use(`${userPrefix}`, new AccessRoutes().router)
   router.use(`${userPrefix}/upload`, new FileRoutes().router)
-  router.use(`${prefix}/industry`, new IndustryRoutes().router)
-  router.use(`${userPrefix}/dalle`, new DalleRoutes().router)
+  // router.use(`${prefix}/industry`, new IndustryRoutes().router)
+  // router.use(`${userPrefix}/dalle`, new DalleRoutes().router)
   
   router.use(`${superAdminPrefix}`, new AccessRoutes().router)
   router.use(`${superAdminPrefix}/upload`, new FileRoutes().router)
