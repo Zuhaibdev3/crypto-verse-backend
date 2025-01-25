@@ -22,6 +22,7 @@
   "author": "Crypto-Verse Team",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@types/eslint": "^8.4.10",
     "api": "^6.1.1",
     "axios": "^0.27.2",
@@ -51,7 +52,9 @@
     "passport": "^0.6.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
+    "react-scroll": "^1.9.0",
     "reflect-metadata": "^0.1.13",
+    "swiper": "^11.2.1",
     "uuid": "^8.3.2",
     "winston": "^3.7.2",
     "winston-daily-rotate-file": "^4.7.1"

@@ -5,6 +5,7 @@ import authentication from '../../../middleware/authentication';
 import { IndustryIdParamSchema, IndustryValidationSchema, UpdateIndustryValidationSchema } from '../../../validations/payloadSchema/IndustrySchema';
 import authorization from '../../../middleware/authorization';
 import { RoleCode } from '../../../database/model/Role';
+import { NftLikeSchema } from '../../..//validations/payloadSchema/NftSchema';
 
 export class NftRoutes {
 
@@ -40,6 +41,26 @@ export class NftRoutes {
       '/',
       authentication,
       this.controller.getAll
+    )
+
+    this.router.get(
+      '/:_id',
+      authentication,
+      this.controller.getById
+    )
+
+    this.router.put(
+      '/like/:_id',
+      authentication,
+      validator(NftLikeSchema),
+      this.controller.updateLike
+    )
+
+    this.router.put(
+      '/:_id',
+      authentication,
+      // validator(NftLikeSchema),
+      this.controller.update
     )
 
     // this.router.get(

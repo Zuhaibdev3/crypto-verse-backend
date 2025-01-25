@@ -7,7 +7,7 @@ import { BadRequestError } from '../../../core/ApiError';
 import SERVICE_IDENTIFIER from '../../../identifiers';
 import { User } from "../user/user.entity";
 import { ObjectId } from "mongoose";
-import { IndustryPayloadDTO, UpdateIndustryPayloadDTO } from "../../../Interface/payloadInterface";
+import { IndustryPayloadDTO, NftLikePayloadDTO, UpdateIndustryPayloadDTO } from "../../../Interface/payloadInterface";
 import { DatabaseId } from "../../../../types";
 import { SuperAdminMetaDataDTO } from "../../../dto/index.dto";
 import { PaginationDataDTO } from "../../../dto/common.dto";
@@ -53,6 +53,51 @@ export class NftService implements INftService {
       throw new BadRequestError('No industry found')
     }
   }
+
+  async get(nftId: string): Promise<any> {
+    try {
+      return this.NftRepository.findById(nftId)
+    } catch (error) {
+      throw new BadRequestError('No Nft found')
+    }
+  }
+
+
+  async handleLikeReaction(bodyData: NftLikePayloadDTO, metaData: MetaDTO, nftId: string): Promise<any> {
+
+    let nftLikeData = DataCopier.assignToTarget(bodyData, metaData)
+
+    // Determine increment value based on the action
+    const incrementValue = nftLikeData.action === "like" ? 1 : -1;
+
+    let result!: any
+    try {
+      result = await this.NftRepository.findByIdAndUpdate(
+        nftId,
+        { $inc: { likes: incrementValue } },
+      );
+      if (!result) throw new BadRequestError('No nft found')
+    } catch (error) {
+      throw new BadRequestError('Something Went Wrong')
+    }
+    return result
+  }
+
+  
+  async update(bodyData: any, metaData: UserMetaDataDTO, nftId: string): Promise<any> {
+
+    let nftUpdatetData = DataCopier.assignToTarget(bodyData, metaData)
+
+    let result!: any
+    try {
+      result = await this.NftRepository.updateOne({ _id: nftId }, nftUpdatetData)
+      if (!result) throw new BadRequestError('No nft found')
+    } catch (error) {
+      throw new BadRequestError('nft cannot be update')
+    }
+    return result
+  }
+
 
   // async getAllforAdmin( paginationData: PaginationDataDTO): Promise<any> {
   //   try {

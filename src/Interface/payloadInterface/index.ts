@@ -6,4 +6,5 @@
 export * from './Access';
 export * from './Dalle';
 export * from './Industry';
+export * from './Nft';
 export * from './Stability';

@@ -7,12 +7,14 @@ import { DalleRoutes } from './dalle/dalle.routes';
 import { StabilityaiRoutes } from './stabilityai/stabilityai.routes';
 import { NftRoutes } from './nft/nft.routes';
 import { NotFoundError } from '../../core/ApiError';
+import { RoleRoutes } from './roles/role.routes';
 
 export const registerApiRoutes = (router: Router, prefix = '', superAdminPrefix = '', userPrefix = ''): void => {
 
   router.get(prefix, (req: Request, res: Response) => res.send('❤'));
   router.use(`${userPrefix}`, new AccessRoutes().router)
   router.use(`${userPrefix}/upload`, new FileRoutes().router)
+  router.use(`${userPrefix}/role`, new RoleRoutes().router)
   // router.use(`${prefix}/industry`, new IndustryRoutes().router)
   // router.use(`${userPrefix}/dalle`, new DalleRoutes().router)
   

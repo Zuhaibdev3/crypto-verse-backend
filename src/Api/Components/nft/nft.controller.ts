@@ -5,9 +5,9 @@ import _ from 'lodash';
 import { INftService } from './inft.service';
 import { resolve } from "../../../dependencymanagement"
 import SERVICE_IDENTIFIER from "../../../identifiers";
-import { IndustryIdParamDTO, IndustryPayloadDTO, UpdateIndustryPayloadDTO } from "../../../Interface/payloadInterface";
+import { IndustryIdParamDTO, IndustryPayloadDTO, NftLikePayloadDTO, UpdateIndustryPayloadDTO } from "../../../Interface/payloadInterface";
 import { tokenDataParser } from "../../../utils/tokenDataParser";
-import { AdminMetaDataDTO, SuperAdminMetaDataDTO } from "../../../dto/index.dto";
+import { AdminMetaDataDTO, SuperAdminMetaDataDTO, UserMetaDataDTO } from "../../../dto/index.dto";
 import { paginationParser } from "../../../utils/paginationParser";
 import { PaginationDataDTO } from "../../../dto/common.dto";
 
@@ -39,6 +39,32 @@ export class NftController {
     let result = await this.NftService.getAll(walletAddress, paginationData)
     new SuccessResponse('found nfts successfully', result).send(res);
   })
+
+  updateLike =
+    asyncHandler(async (req: any, res: Response): Promise<Response | void> => {
+      let bodyData: NftLikePayloadDTO = req.body
+      const { _id } = req.params
+      const metaData: UserMetaDataDTO = tokenDataParser.getUserTokenMetaData(req.user)
+      let result = await this.NftService.handleLikeReaction(bodyData, metaData, _id)
+      new SuccessResponse('Updated successfully', result).send(res);
+    })
+
+  getById =
+    asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
+      const { _id } = req.params
+      let result = await this.NftService.get(_id)
+      new SuccessResponse('found industry successfully', result).send(res);
+    })
+
+  update =
+    asyncHandler(async (req: any, res: Response): Promise<Response | void> => {
+      let bodyData: any = req.body
+      const { _id } = req.params
+      const metaData: UserMetaDataDTO = tokenDataParser.getUserTokenMetaData(req.user)
+      let result = await this.NftService.update(bodyData, metaData, _id)
+      new SuccessResponse('Updated successfully', result).send(res);
+    })
+
   // getAllforAdmin =
   //   asyncHandler(async (req: any, res: Response, next: NextFunction): Promise<Response | void> => {
   //     const paginationData: PaginationDataDTO = paginationParser.getpaginationData(req.query)
