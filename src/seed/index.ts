@@ -9,13 +9,13 @@ import RoleRepo from "../Api/Components/roles/role.repository"
   try {
 
     // ====================================================
-    const roles = await RoleRepo.create([
-      // @ts-ignore    
-      { code: RoleCode.USER },
-      // @ts-ignore    
-      { code: RoleCode.SUPER_ADMIN },
-    ])
-    Logger.info(roles);
+    // const roles = await RoleRepo.create([
+    //   // @ts-ignore    
+    //   { code: RoleCode.USER },
+    //   // @ts-ignore    
+    //   { code: RoleCode.SUPER_ADMIN },
+    // ])
+    // Logger.info(roles);
     // ====================================================
 
   } catch (err: any) {
